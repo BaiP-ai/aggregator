@@ -3,6 +3,9 @@
  * Main JavaScript file for the AI tools aggregator site
  */
 
+// Base URL for all API requests
+const BASE_URL = '';  // Empty string for relative paths with the <base> tag
+
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize search functionality
     initSearch();
@@ -113,7 +116,7 @@ function performSearch() {
     window.history.pushState({ path: newUrl }, '', newUrl);
     
     // Fetch search index and perform search
-    fetch('/data/search-index.json')
+    fetch(`${BASE_URL}data/search-index.json`)
         .then(response => response.json())
         .then(searchIndex => {
             // Filter tools based on search criteria
@@ -215,7 +218,7 @@ function displaySearchResults(results) {
     }
     
     // Fetch full tool data
-    fetch('/data/tools.json')
+    fetch(`${BASE_URL}data/tools.json`)
         .then(response => response.json())
         .then(allTools => {
             // Create a map of tool IDs to full tool data
@@ -292,13 +295,13 @@ function createToolElement(tool) {
     // Update tool data
     toolElement.querySelector('.tool-name').textContent = tool.name;
     toolElement.querySelector('.tool-description').textContent = tool.description;
-    toolElement.querySelector('.tool-details-link').href = `/tool/${tool.id}.html`;
+    toolElement.querySelector('.tool-details-link').href = `tool/${tool.id}.html`;
     toolElement.querySelector('.tool-website-link').href = tool.url;
     
     // Update logo if available
     if (tool.logo) {
         const logoContainer = toolElement.querySelector('.tool-logo-container');
-        logoContainer.innerHTML = `<img src="/static/images/logos/${tool.logo}" alt="${tool.name} Logo" class="tool-logo">`;
+        logoContainer.innerHTML = `<img src="${BASE_URL}static/images/logos/${tool.logo}" alt="${tool.name} Logo" class="tool-logo">`;
     }
     
     // Add badges
@@ -353,7 +356,7 @@ function getComplexityBadgeClass(complexity) {
 function logSearchQuery(query) {
     if (!query) return;
     
-    fetch('/api/search', {
+    fetch(`${BASE_URL}api/search`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -375,7 +378,7 @@ function initSubcategorySelection() {
     if (!categorySelect || !subcategorySelect) return;
     
     // Fetch categories data
-    fetch('/data/categories.json')
+    fetch(`${BASE_URL}data/categories.json`)
         .then(response => response.json())
         .then(categories => {
             // Create category map
@@ -459,7 +462,7 @@ function initCategoryRequestForm() {
         const contactEmail = document.getElementById('contactEmail').value.trim();
         
         // Submit request
-        fetch('/api/request-category', {
+        fetch(`${BASE_URL}api/request-category`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -520,7 +523,7 @@ function initToolSuggestionForm() {
         const contactEmail = document.getElementById('contactEmail').value.trim();
         
         // Submit request
-        fetch('/api/suggest-tool', {
+        fetch(`${BASE_URL}api/suggest-tool`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
