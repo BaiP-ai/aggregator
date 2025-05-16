@@ -1,0 +1,169 @@
+{
+  "categories": [
+    {
+      "id": "business-operations",
+      "name": "Business Operations & Automation",
+      "subcategories": [
+        {
+          "id": "administrative-ai",
+          "name": "Administrative AI",
+          "description": "Tools for document processing, scheduling, and general administrative tasks"
+        },
+        {
+          "id": "workflow-automation",
+          "name": "Workflow Automation Tools",
+          "description": "Solutions for automating business processes and workflows"
+        },
+        {
+          "id": "customer-service-automation",
+          "name": "Customer Service Automation",
+          "description": "AI tools for automating customer support and service"
+        },
+        {
+          "id": "data-entry-processing",
+          "name": "Data Entry & Processing",
+          "description": "Tools for automating data entry and processing tasks"
+        }
+      ],
+      "description": "AI tools that help businesses automate and optimize their operational processes"
+    },
+    {
+      "id": "sales-marketing",
+      "name": "Sales & Marketing",
+      "subcategories": [
+        {
+          "id": "lead-generation",
+          "name": "Lead Generation AI",
+          "description": "Tools for identifying and qualifying potential customers"
+        },
+        {
+          "id": "customer-analytics",
+          "name": "Customer Analytics",
+          "description": "Solutions for analyzing customer behavior and preferences"
+        },
+        {
+          "id": "content-creation",
+          "name": "Content Creation & Marketing",
+          "description": "AI tools for generating and optimizing marketing content"
+        },
+        {
+          "id": "social-media-management",
+          "name": "Social Media Management",
+          "description": "Tools for automating and optimizing social media presence"
+        }
+      ],
+      "description": "AI solutions that enhance sales processes and marketing efforts"
+    },
+    {
+      "id": "finance-resource-management",
+      "name": "Finance & Resource Management",
+      "subcategories": [
+        {
+          "id": "financial-analysis",
+          "name": "Financial Analysis & Forecasting",
+          "description": "Tools for financial planning, analysis, and forecasting"
+        },
+        {
+          "id": "expense-management",
+          "name": "Expense Management",
+          "description": "Solutions for tracking and managing business expenses"
+        },
+        {
+          "id": "inventory-optimization",
+          "name": "Inventory Optimization",
+          "description": "AI tools for optimizing inventory levels and management"
+        },
+        {
+          "id": "resource-planning",
+          "name": "Resource Planning",
+          "description": "Tools for planning and allocating business resources"
+        }
+      ],
+      "description": "AI solutions for financial management and resource optimization"
+    },
+    {
+      "id": "human-resources",
+      "name": "Human Resources & Team Management",
+      "subcategories": [
+        {
+          "id": "recruitment-hiring",
+          "name": "Recruitment & Hiring",
+          "description": "Tools for finding and evaluating potential employees"
+        },
+        {
+          "id": "employee-engagement",
+          "name": "Employee Engagement",
+          "description": "Solutions for improving employee satisfaction and retention"
+        },
+        {
+          "id": "training-development",
+          "name": "Training & Development",
+          "description": "AI tools for employee training and skill development"
+        },
+        {
+          "id": "performance-management",
+          "name": "Performance Management",
+          "description": "Tools for tracking and improving employee performance"
+        }
+      ],
+      "description": "AI tools for human resources management and team optimization"
+    },
+    {
+      "id": "decision-support",
+      "name": "Decision Support & Strategy",
+      "subcategories": [
+        {
+          "id": "market-analysis",
+          "name": "Market Analysis",
+          "description": "Tools for analyzing market trends and opportunities"
+        },
+        {
+          "id": "business-intelligence",
+          "name": "Business Intelligence",
+          "description": "Solutions for gathering and analyzing business data"
+        },
+        {
+          "id": "competitive-research",
+          "name": "Competitive Research",
+          "description": "AI tools for monitoring and analyzing competitors"
+        },
+        {
+          "id": "strategic-planning",
+          "name": "Strategic Planning",
+          "description": "Tools for developing and implementing business strategies"
+        }
+      ],
+      "description": "AI solutions that support strategic decision-making and planning"
+    },
+    {
+      "id": "industry-specific",
+      "name": "Industry-Specific Solutions",
+      "subcategories": [
+        {
+          "id": "manufacturing",
+          "name": "Manufacturing",
+          "description": "AI tools designed specifically for manufacturing businesses"
+        },
+        {
+          "id": "healthcare",
+          "name": "Healthcare",
+          "description": "Solutions for healthcare organizations"
+        },
+        {
+          "id": "retail",
+          "name": "Retail",
+          "description": "AI tools for retail businesses"
+        },
+        {
+          "id": "professional-services",
+          "name": "Professional Services",
+          "description": "Tools for service-based businesses like consulting, legal, etc."
+        }
+      ],
+      "description": "AI solutions tailored to specific industries and business types"
+    }
+  ],
+  "complexityLevels": ["Low", "Medium", "High"],
+  "pricingModels": ["Free", "Freemium", "Subscription", "One-time Purchase", "Usage-based", "Custom Pricing"],
+  "regions": ["North America", "Europe", "Asia Pacific", "Latin America", "Middle East and Africa", "Global"]
+}

@@ -1,62 +1,62 @@
 [
   {
-    "id": "tool-1",
-    "name": "BusinessAI Assistant",
-    "description": "An AI-powered virtual assistant that helps small businesses automate administrative tasks, manage schedules, and respond to basic customer inquiries.",
+    "id": "chatgpt",
+    "name": "ChatGPT",
+    "description": "Advanced language model for conversation and content creation",
+    "url": "https://chat.openai.com",
     "categoryId": "business-operations",
     "subcategoryId": "administrative-ai",
-    "tags": [
-      "virtual assistant",
-      "scheduling",
-      "email automation",
-      "customer support"
-    ],
-    "pricingModel": "Freemium",
     "implementationComplexity": "Low",
-    "regions": [
-      "North America",
-      "Europe"
-    ],
-    "smeSuitabilityScore": 4.5
-  },
-  {
-    "id": "tool-2",
-    "name": "SalesGenius",
-    "description": "An AI-powered CRM enhancement that helps sales teams identify high-potential leads, recommend optimal follow-up times, and predict deal outcomes.",
-    "categoryId": "sales-marketing",
-    "subcategoryId": "lead-generation",
+    "pricingModel": "Freemium",
+    "smeSuitabilityScore": 4.5,
     "tags": [
-      "sales",
-      "CRM",
-      "lead scoring",
-      "sales forecasting"
+      "AI assistant",
+      "language model",
+      "content generation",
+      "natural language processing"
     ],
-    "pricingModel": "Subscription",
-    "implementationComplexity": "Medium",
     "regions": [
       "Global"
-    ],
-    "smeSuitabilityScore": 4.2
+    ]
   },
   {
-    "id": "tool-3",
-    "name": "FinancePredict",
-    "description": "An AI financial analysis tool that provides small businesses with cash flow forecasting, expense tracking, and financial planning assistance.",
-    "categoryId": "finance-resource-management",
-    "subcategoryId": "financial-analysis",
-    "tags": [
-      "finance",
-      "cash flow",
-      "forecasting",
-      "expense tracking"
-    ],
+    "id": "jasper",
+    "name": "Jasper",
+    "description": "AI content writer that helps you create marketing copy, social media posts, and more",
+    "url": "https://www.jasper.ai",
+    "categoryId": "sales-marketing",
+    "subcategoryId": "content-creation",
+    "implementationComplexity": "Low",
     "pricingModel": "Subscription",
-    "implementationComplexity": "Medium",
-    "regions": [
-      "North America",
-      "Europe",
-      "Asia Pacific"
+    "smeSuitabilityScore": 4.2,
+    "tags": [
+      "content creation",
+      "marketing copy",
+      "AI writer",
+      "blog posts"
     ],
-    "smeSuitabilityScore": 4.7
+    "regions": [
+      "Global"
+    ]
+  },
+  {
+    "id": "zapier",
+    "name": "Zapier",
+    "description": "Connect your apps and automate workflows to make your business more efficient",
+    "url": "https://zapier.com",
+    "categoryId": "business-operations",
+    "subcategoryId": "workflow-automation",
+    "implementationComplexity": "Medium",
+    "pricingModel": "Freemium",
+    "smeSuitabilityScore": 4.8,
+    "tags": [
+      "automation",
+      "workflow",
+      "integration",
+      "no-code"
+    ],
+    "regions": [
+      "Global"
+    ]
   }
 ]

@@ -1,89 +1,157 @@
 [
   {
-    "id": "tool-1",
-    "name": "BusinessAI Assistant",
-    "description": "An AI-powered virtual assistant that helps small businesses automate administrative tasks, manage schedules, and respond to basic customer inquiries.",
-    "url": "https://example.com/businessai",
-    "categoryId": "business-operations",
-    "subcategoryId": "administrative-ai",
-    "logo": "businessai-logo.png",
+    "id": "chatgpt",
+    "name": "ChatGPT",
+    "description": "Advanced language model for conversation and content creation",
+    "url": "https://chat.openai.com",
+    "logo": "chatgpt.png",
     "implementationComplexity": "Low",
     "pricingModel": "Freemium",
-    "pricingRange": "$0-$49/month",
-    "regionAvailability": [
-      "North America",
-      "Europe"
-    ],
     "smeSuitabilityScore": 4.5,
-    "implementationTimeline": "1-3 days",
-    "resourceRequirements": "No technical expertise required, minimal training needed",
-    "scalability": "Scales to support teams of up to 50 people",
-    "tags": [
-      "virtual assistant",
-      "scheduling",
-      "email automation",
-      "customer support"
+    "categoryId": "business-operations",
+    "subcategoryId": "administrative-ai",
+    "company": "OpenAI",
+    "yearFounded": 2015,
+    "headquarters": "San Francisco, USA",
+    "tags": ["AI assistant", "language model", "content generation", "natural language processing"],
+    "features": [
+      "Natural language conversations",
+      "Answer questions on a wide range of topics",
+      "Generate creative content",
+      "Assist with coding and problem-solving",
+      "Available via web interface and API"
     ],
-    "featured": true,
-    "dateAdded": "2025-05-01",
-    "lastUpdated": "2025-05-10"
+    "useCases": [
+      "Customer support automation",
+      "Content creation assistance",
+      "Research and information gathering",
+      "Brainstorming and ideation",
+      "Educational support and tutoring"
+    ],
+    "pricingDetails": {
+      "free": {
+        "name": "Free",
+        "price": "$0",
+        "features": ["Access to GPT-3.5", "Standard response speed", "Standard availability during high demand"]
+      },
+      "plus": {
+        "name": "Plus",
+        "price": "$20/month",
+        "features": ["Access to GPT-4", "Faster response speed", "Priority access during high demand", "Early access to new features"]
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "price": "Custom",
+        "features": ["Custom solutions", "Advanced security features", "Dedicated support", "Service level agreements"]
+      }
+    },
+    "implementationTimeline": "1-2 days",
+    "resourceRequirements": "Web browser or API integration capabilities",
+    "integrations": ["Zapier", "Slack", "Microsoft Office", "Browser extensions"]
   },
   {
-    "id": "tool-2",
-    "name": "SalesGenius",
-    "description": "An AI-powered CRM enhancement that helps sales teams identify high-potential leads, recommend optimal follow-up times, and predict deal outcomes.",
-    "url": "https://example.com/salesgenius",
-    "categoryId": "sales-marketing",
-    "subcategoryId": "lead-generation",
-    "logo": "salesgenius-logo.png",
-    "implementationComplexity": "Medium",
+    "id": "jasper",
+    "name": "Jasper",
+    "description": "AI content writer that helps you create marketing copy, social media posts, and more",
+    "url": "https://www.jasper.ai",
+    "logo": "jasper.png",
+    "implementationComplexity": "Low",
     "pricingModel": "Subscription",
-    "pricingRange": "$39-$99/user/month",
-    "regionAvailability": [
-      "Global"
-    ],
     "smeSuitabilityScore": 4.2,
-    "implementationTimeline": "1-2 weeks",
-    "resourceRequirements": "Requires CRM administrator for setup, sales team training recommended",
-    "scalability": "Works for sales teams of any size, pricing scales per user",
-    "tags": [
-      "sales",
-      "CRM",
-      "lead scoring",
-      "sales forecasting"
+    "categoryId": "sales-marketing",
+    "subcategoryId": "content-creation",
+    "company": "Jasper AI",
+    "yearFounded": 2020,
+    "headquarters": "Austin, USA",
+    "tags": ["content creation", "marketing copy", "AI writer", "blog posts"],
+    "features": [
+      "AI-powered content writing",
+      "50+ templates for different content types",
+      "Supports 25+ languages",
+      "Brand voice customization",
+      "Plagiarism checker"
     ],
-    "featured": true,
-    "dateAdded": "2025-04-15",
-    "lastUpdated": "2025-05-05"
+    "useCases": [
+      "Creating blog posts and articles",
+      "Writing marketing copy",
+      "Generating social media content",
+      "Creating email newsletters",
+      "Writing product descriptions"
+    ],
+    "pricingDetails": {
+      "creator": {
+        "name": "Creator",
+        "price": "$49/month",
+        "features": ["50,000 words per month", "Basic templates", "Single user"]
+      },
+      "teams": {
+        "name": "Teams",
+        "price": "$125/month",
+        "features": ["100,000 words per month", "Advanced templates", "Multiple users", "Brand voice settings"]
+      },
+      "business": {
+        "name": "Business",
+        "price": "Custom",
+        "features": ["Custom word limit", "All features", "Dedicated account manager", "API access"]
+      }
+    },
+    "implementationTimeline": "Same day",
+    "resourceRequirements": "Web browser",
+    "integrations": ["Grammarly", "Surfer SEO", "Chrome extension"]
   },
   {
-    "id": "tool-3",
-    "name": "FinancePredict",
-    "description": "An AI financial analysis tool that provides small businesses with cash flow forecasting, expense tracking, and financial planning assistance.",
-    "url": "https://example.com/financepredict",
-    "categoryId": "finance-resource-management",
-    "subcategoryId": "financial-analysis",
-    "logo": "financepredict-logo.png",
+    "id": "zapier",
+    "name": "Zapier",
+    "description": "Connect your apps and automate workflows to make your business more efficient",
+    "url": "https://zapier.com",
+    "logo": "zapier.png",
     "implementationComplexity": "Medium",
-    "pricingModel": "Subscription",
-    "pricingRange": "$29-$149/month",
-    "regionAvailability": [
-      "North America",
-      "Europe",
-      "Asia Pacific"
+    "pricingModel": "Freemium",
+    "smeSuitabilityScore": 4.8,
+    "categoryId": "business-operations",
+    "subcategoryId": "workflow-automation",
+    "company": "Zapier, Inc.",
+    "yearFounded": 2011,
+    "headquarters": "San Francisco, USA",
+    "tags": ["automation", "workflow", "integration", "no-code"],
+    "features": [
+      "Connect 5,000+ apps without coding",
+      "Create automated workflows (Zaps)",
+      "Schedule automated tasks",
+      "Filter and logic rules",
+      "Multi-step Zaps"
     ],
-    "smeSuitabilityScore": 4.7,
-    "implementationTimeline": "3-7 days",
-    "resourceRequirements": "Requires access to financial accounts and basic accounting knowledge",
-    "scalability": "Scales from solopreneurs to businesses with up to $10M annual revenue",
-    "tags": [
-      "finance",
-      "cash flow",
-      "forecasting",
-      "expense tracking"
+    "useCases": [
+      "Automating data entry between apps",
+      "Syncing customer data across platforms",
+      "Automating marketing workflows",
+      "Creating notification systems",
+      "Connecting CRM with other business tools"
     ],
-    "featured": true,
-    "dateAdded": "2025-03-20",
-    "lastUpdated": "2025-05-12"
+    "pricingDetails": {
+      "free": {
+        "name": "Free",
+        "price": "$0",
+        "features": ["5 single-step Zaps", "100 tasks per month", "Basic automation"]
+      },
+      "starter": {
+        "name": "Starter",
+        "price": "$19.99/month",
+        "features": ["20 multi-step Zaps", "750 tasks per month", "Basic conditions and filters"]
+      },
+      "professional": {
+        "name": "Professional",
+        "price": "$49/month",
+        "features": ["Unlimited Zaps", "2,000 tasks per month", "Advanced conditions and filters"]
+      },
+      "team": {
+        "name": "Team",
+        "price": "$299/month",
+        "features": ["Unlimited Zaps", "50,000 tasks per month", "Team collaboration features"]
+      }
+    },
+    "implementationTimeline": "1-7 days depending on complexity",
+    "resourceRequirements": "Web browser and accounts on apps to be connected",
+    "integrations": ["Google Workspace", "Microsoft 365", "Slack", "Trello", "Salesforce", "5,000+ other apps"]
   }
 ]

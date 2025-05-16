@@ -2,8 +2,6 @@
   {
     "id": "business-operations",
     "name": "Business Operations & Automation",
-    "description": "AI tools that help businesses automate and optimize their operational processes",
-    "count": 1,
     "subcategories": [
       {
         "id": "administrative-ai",
@@ -15,7 +13,7 @@
         "id": "workflow-automation",
         "name": "Workflow Automation Tools",
         "description": "Solutions for automating business processes and workflows",
-        "count": 0
+        "count": 1
       },
       {
         "id": "customer-service-automation",
@@ -29,19 +27,19 @@
         "description": "Tools for automating data entry and processing tasks",
         "count": 0
       }
-    ]
+    ],
+    "description": "AI tools that help businesses automate and optimize their operational processes",
+    "count": 2
   },
   {
     "id": "sales-marketing",
     "name": "Sales & Marketing",
-    "description": "AI solutions that enhance sales processes and marketing efforts",
-    "count": 1,
     "subcategories": [
       {
         "id": "lead-generation",
         "name": "Lead Generation AI",
         "description": "Tools for identifying and qualifying potential customers",
-        "count": 1
+        "count": 0
       },
       {
         "id": "customer-analytics",
@@ -53,7 +51,7 @@
         "id": "content-creation",
         "name": "Content Creation & Marketing",
         "description": "AI tools for generating and optimizing marketing content",
-        "count": 0
+        "count": 1
       },
       {
         "id": "social-media-management",
@@ -61,19 +59,19 @@
         "description": "Tools for automating and optimizing social media presence",
         "count": 0
       }
-    ]
+    ],
+    "description": "AI solutions that enhance sales processes and marketing efforts",
+    "count": 1
   },
   {
     "id": "finance-resource-management",
     "name": "Finance & Resource Management",
-    "description": "AI solutions for financial management and resource optimization",
-    "count": 1,
     "subcategories": [
       {
         "id": "financial-analysis",
         "name": "Financial Analysis & Forecasting",
         "description": "Tools for financial planning, analysis, and forecasting",
-        "count": 1
+        "count": 0
       },
       {
         "id": "expense-management",
@@ -93,13 +91,13 @@
         "description": "Tools for planning and allocating business resources",
         "count": 0
       }
-    ]
+    ],
+    "description": "AI solutions for financial management and resource optimization",
+    "count": 0
   },
   {
     "id": "human-resources",
     "name": "Human Resources & Team Management",
-    "description": "AI tools for human resources management and team optimization",
-    "count": 0,
     "subcategories": [
       {
         "id": "recruitment-hiring",
@@ -125,13 +123,13 @@
         "description": "Tools for tracking and improving employee performance",
         "count": 0
       }
-    ]
+    ],
+    "description": "AI tools for human resources management and team optimization",
+    "count": 0
   },
   {
     "id": "decision-support",
     "name": "Decision Support & Strategy",
-    "description": "AI solutions that support strategic decision-making and planning",
-    "count": 0,
     "subcategories": [
       {
         "id": "market-analysis",
@@ -157,13 +155,13 @@
         "description": "Tools for developing and implementing business strategies",
         "count": 0
       }
-    ]
+    ],
+    "description": "AI solutions that support strategic decision-making and planning",
+    "count": 0
   },
   {
     "id": "industry-specific",
     "name": "Industry-Specific Solutions",
-    "description": "AI solutions tailored to specific industries and business types",
-    "count": 0,
     "subcategories": [
       {
         "id": "manufacturing",
@@ -189,6 +187,8 @@
         "description": "Tools for service-based businesses like consulting, legal, etc.",
         "count": 0
       }
-    ]
+    ],
+    "description": "AI solutions tailored to specific industries and business types",
+    "count": 0
   }
 ]
