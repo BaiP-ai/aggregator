@@ -3,8 +3,8 @@
  * Main JavaScript file for the AI tools aggregator site
  */
 
-// Base URL for all API requests
-const BASE_URL = '';  // Empty string for relative paths with the <base> tag
+// Get base URL from window variable set in main layout
+const BASE_URL = window.BAIP_BASE_PATH || '/aggregator/';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize search functionality
@@ -295,7 +295,7 @@ function createToolElement(tool) {
     // Update tool data
     toolElement.querySelector('.tool-name').textContent = tool.name;
     toolElement.querySelector('.tool-description').textContent = tool.description;
-    toolElement.querySelector('.tool-details-link').href = `tool/${tool.id}.html`;
+    toolElement.querySelector('.tool-details-link').href = `${BASE_URL}tool/${tool.id}.html`;
     toolElement.querySelector('.tool-website-link').href = tool.url;
     
     // Update logo if available

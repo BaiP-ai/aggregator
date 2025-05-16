@@ -6,16 +6,18 @@
     <title>SalesGenius - AI Tool for Lead Generation AI - BAIP.ai</title>
     <meta name="description" content="An AI-powered CRM enhancement that helps sales teams identify high-potential leads, recommend optimal follow-up times, and predict deal outcomes.">
     
-    <!-- Base URL for all links -->
-    <base href="https://www.baip.ai/aggregator/">
+    <!-- Define base path for JavaScript use -->
+    <script>
+        window.BAIP_BASE_PATH = '/aggregator/';
+    </script>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="static/images/favicon.png">
+    <link rel="icon" type="image/png" href="/aggregator/static/images/favicon.png">
     
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="/aggregator/static/css/style.css">
     
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:title" content="SalesGenius - AI Tool for Lead Generation AI - BAIP.ai">
@@ -45,8 +47,8 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand d-flex align-items-center" href="./">
-                    <img src="static/images/baip-logo.svg" alt="BAIP.ai Logo" height="30" class="me-2">
+                <a class="navbar-brand d-flex align-items-center" href="/aggregator/">
+                    <img src="/aggregator/static/images/baip-logo.svg" alt="BAIP.ai Logo" height="30" class="me-2">
                     <span>BAIP.ai</span>
                     <span class="ms-2 badge bg-light text-primary">AI Aggregator</span>
                 </a>
@@ -65,15 +67,15 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="search.html">Search</a>
+                            <a class="nav-link" href="/aggregator/search.html">Search</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="about.html">About</a>
+                            <a class="nav-link" href="/aggregator/about.html">About</a>
                         </li>
                     </ul>
                     
                     <div class="d-flex">
-                        <form class="d-flex search-form" action="search.html" method="get">
+                        <form class="d-flex search-form" action="/aggregator/search.html" method="get">
                             <div class="input-group">
                                 <input type="search" class="form-control" name="q" placeholder="Search AI tools..." aria-label="Search" required>
                                 <button class="btn btn-light" type="submit">
@@ -293,9 +295,9 @@
                 <div class="col-md-4 mb-4">
                     <h5 class="mb-3">Quick Links</h5>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="./" class="text-light">Home</a></li>
-                        <li class="mb-2"><a href="search.html" class="text-light">Search</a></li>
-                        <li class="mb-2"><a href="about.html" class="text-light">About</a></li>
+                        <li class="mb-2"><a href="/aggregator/" class="text-light">Home</a></li>
+                        <li class="mb-2"><a href="/aggregator/search.html" class="text-light">Search</a></li>
+                        <li class="mb-2"><a href="/aggregator/about.html" class="text-light">About</a></li>
                         <li class="mb-2"><a href="https://www.baip.ai/contact" class="text-light">Contact Us</a></li>
                     </ul>
                 </div>
@@ -348,6 +350,6 @@
     
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="static/js/main.js"></script>
+    <script src="/aggregator/static/js/main.js"></script>
 </body>
 </html>
