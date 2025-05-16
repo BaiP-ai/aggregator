@@ -1,0 +1,31 @@
+{
+  "totalTools": 3,
+  "categoryCounts": {
+    "business-operations": 1,
+    "sales-marketing": 1,
+    "finance-resource-management": 1
+  },
+  "pricingCounts": {
+    "Freemium": 1,
+    "Subscription": 2
+  },
+  "avgSuitabilityScore": 4.47,
+  "recentAdditions": [
+    {
+      "id": "tool-1",
+      "name": "BusinessAI Assistant",
+      "date": "2025-05-01"
+    },
+    {
+      "id": "tool-2",
+      "name": "SalesGenius",
+      "date": "2025-04-15"
+    },
+    {
+      "id": "tool-3",
+      "name": "FinancePredict",
+      "date": "2025-03-20"
+    }
+  ],
+  "topSearches": []
+}
