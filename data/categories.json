@@ -2,6 +2,7 @@
   {
     "id": "business-operations",
     "name": "Business Operations & Automation",
+    "description": "AI tools that help businesses automate and optimize their operational processes",
     "subcategories": [
       {
         "id": "administrative-ai",
@@ -14,26 +15,14 @@
         "name": "Workflow Automation Tools",
         "description": "Solutions for automating business processes and workflows",
         "count": 1
-      },
-      {
-        "id": "customer-service-automation",
-        "name": "Customer Service Automation",
-        "description": "AI tools for automating customer support and service",
-        "count": 0
-      },
-      {
-        "id": "data-entry-processing",
-        "name": "Data Entry & Processing",
-        "description": "Tools for automating data entry and processing tasks",
-        "count": 0
       }
     ],
-    "description": "AI tools that help businesses automate and optimize their operational processes",
     "count": 2
   },
   {
     "id": "sales-marketing",
     "name": "Sales & Marketing",
+    "description": "AI solutions that enhance sales processes and marketing efforts",
     "subcategories": [
       {
         "id": "lead-generation",
@@ -42,30 +31,18 @@
         "count": 0
       },
       {
-        "id": "customer-analytics",
-        "name": "Customer Analytics",
-        "description": "Solutions for analyzing customer behavior and preferences",
-        "count": 0
-      },
-      {
         "id": "content-creation",
         "name": "Content Creation & Marketing",
         "description": "AI tools for generating and optimizing marketing content",
         "count": 1
-      },
-      {
-        "id": "social-media-management",
-        "name": "Social Media Management",
-        "description": "Tools for automating and optimizing social media presence",
-        "count": 0
       }
     ],
-    "description": "AI solutions that enhance sales processes and marketing efforts",
     "count": 1
   },
   {
     "id": "finance-resource-management",
     "name": "Finance & Resource Management",
+    "description": "AI solutions for financial management and resource optimization",
     "subcategories": [
       {
         "id": "financial-analysis",
@@ -78,117 +55,8 @@
         "name": "Expense Management",
         "description": "Solutions for tracking and managing business expenses",
         "count": 0
-      },
-      {
-        "id": "inventory-optimization",
-        "name": "Inventory Optimization",
-        "description": "AI tools for optimizing inventory levels and management",
-        "count": 0
-      },
-      {
-        "id": "resource-planning",
-        "name": "Resource Planning",
-        "description": "Tools for planning and allocating business resources",
-        "count": 0
       }
     ],
-    "description": "AI solutions for financial management and resource optimization",
-    "count": 0
-  },
-  {
-    "id": "human-resources",
-    "name": "Human Resources & Team Management",
-    "subcategories": [
-      {
-        "id": "recruitment-hiring",
-        "name": "Recruitment & Hiring",
-        "description": "Tools for finding and evaluating potential employees",
-        "count": 0
-      },
-      {
-        "id": "employee-engagement",
-        "name": "Employee Engagement",
-        "description": "Solutions for improving employee satisfaction and retention",
-        "count": 0
-      },
-      {
-        "id": "training-development",
-        "name": "Training & Development",
-        "description": "AI tools for employee training and skill development",
-        "count": 0
-      },
-      {
-        "id": "performance-management",
-        "name": "Performance Management",
-        "description": "Tools for tracking and improving employee performance",
-        "count": 0
-      }
-    ],
-    "description": "AI tools for human resources management and team optimization",
-    "count": 0
-  },
-  {
-    "id": "decision-support",
-    "name": "Decision Support & Strategy",
-    "subcategories": [
-      {
-        "id": "market-analysis",
-        "name": "Market Analysis",
-        "description": "Tools for analyzing market trends and opportunities",
-        "count": 0
-      },
-      {
-        "id": "business-intelligence",
-        "name": "Business Intelligence",
-        "description": "Solutions for gathering and analyzing business data",
-        "count": 0
-      },
-      {
-        "id": "competitive-research",
-        "name": "Competitive Research",
-        "description": "AI tools for monitoring and analyzing competitors",
-        "count": 0
-      },
-      {
-        "id": "strategic-planning",
-        "name": "Strategic Planning",
-        "description": "Tools for developing and implementing business strategies",
-        "count": 0
-      }
-    ],
-    "description": "AI solutions that support strategic decision-making and planning",
-    "count": 0
-  },
-  {
-    "id": "industry-specific",
-    "name": "Industry-Specific Solutions",
-    "subcategories": [
-      {
-        "id": "manufacturing",
-        "name": "Manufacturing",
-        "description": "AI tools designed specifically for manufacturing businesses",
-        "count": 0
-      },
-      {
-        "id": "healthcare",
-        "name": "Healthcare",
-        "description": "Solutions for healthcare organizations",
-        "count": 0
-      },
-      {
-        "id": "retail",
-        "name": "Retail",
-        "description": "AI tools for retail businesses",
-        "count": 0
-      },
-      {
-        "id": "professional-services",
-        "name": "Professional Services",
-        "description": "Tools for service-based businesses like consulting, legal, etc.",
-        "count": 0
-      }
-    ],
-    "description": "AI solutions tailored to specific industries and business types",
     "count": 0
   }
 ]

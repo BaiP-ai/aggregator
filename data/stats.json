@@ -30,19 +30,19 @@
   ],
   "mostViewed": [
     {
-      "id": "chatgpt",
-      "name": "ChatGPT",
-      "views": 751
-    },
-    {
       "id": "jasper",
       "name": "Jasper",
-      "views": 950
+      "views": 908
+    },
+    {
+      "id": "chatgpt",
+      "name": "ChatGPT",
+      "views": 875
     },
     {
       "id": "zapier",
       "name": "Zapier",
-      "views": 659
+      "views": 265
     }
   ],
   "topSearches": [
@@ -67,5 +67,5 @@
       "count": 65
     }
   ],
-  "lastUpdated": "2025-05-18T19:36:44.797Z"
+  "lastUpdated": "2025-05-18T19:50:33.822Z"
 }
