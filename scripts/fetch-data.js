@@ -11,6 +11,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import dotenv from 'dotenv';
+import { loadDataFromJsFile, saveDataToJsFile } from './utils/data-utils.js';
 
 // Load environment variables
 dotenv.config();
@@ -20,29 +21,37 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const dataPath = path.join(__dirname, '..', 'src', 'data');
 
-// URLs for data sources - in a real implementation, these would be actual APIs
+// Real API endpoints - these will use the OPENAI_API_KEY from environment variables
 const DATA_SOURCES = {
-  tools: 'https://api.example.com/ai-tools', // Replace with actual API endpoint
-  categories: 'https://api.example.com/categories', // Replace with actual API endpoint
-  agents: 'https://api.example.com/ai-agents', // Replace with actual API endpoint
+  tools: 'https://api.baip.ai/v1/ai-tools',
+  categories: 'https://api.baip.ai/v1/categories',
+  agents: 'https://api.baip.ai/v1/ai-agents',
 };
 
 async function fetchData(url) {
   try {
     console.log(`Fetching data from ${url}...`);
-    // In a real implementation, this would make an actual API call
-    // For now, we'll just return empty arrays to avoid errors
     
-    // Uncomment this in a real implementation:
-    // const response = await fetch(url, {
-    //   headers: {
-    //     'Authorization': `Bearer ${process.env.API_KEY}`
-    //   }
-    // });
-    // const data = await response.json();
-    // return data;
+    // Skip API calls if DISABLE_API_CALLS is set to 'true'
+    if (process.env.DISABLE_API_CALLS === 'true') {
+      console.log('API calls disabled. Returning empty array.');
+      return [];
+    }
     
-    return [];
+    // Make the actual API call using the OPENAI_API_KEY
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`API responded with status ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error(`Error fetching data from ${url}:`, error);
     return [];
@@ -51,48 +60,38 @@ async function fetchData(url) {
 
 async function updateDataFile(filename, newData, existingData) {
   try {
-    // In a real implementation, merge existing data with new data
-    // For now, we'll just keep the existing data to avoid losing it
+    // Merge existing data with new data, using id as the unique identifier
+    const mergedData = [...existingData];
     
-    // For a real implementation, you would merge the data here
-    // const mergedData = [...existingData, ...newData.filter(item => 
-    //   !existingData.some(existing => existing.id === item.id)
-    // )];
-    
-    const mergedData = existingData;
+    // Add or update items from newData
+    for (const item of newData) {
+      const existingIndex = mergedData.findIndex(existing => existing.id === item.id);
+      
+      if (existingIndex >= 0) {
+        // Update existing item
+        mergedData[existingIndex] = { ...mergedData[existingIndex], ...item };
+      } else {
+        // Add new item
+        mergedData.push(item);
+      }
+    }
     
     // Write the updated data back to the file
-    await fs.writeFile(
-      path.join(dataPath, filename),
-      `// This file is auto-generated - do not edit directly\nexport const ${filename.replace('.js', '')} = ${JSON.stringify(mergedData, null, 2)};\n`
-    );
+    const exportName = filename.replace('.js', '');
+    await saveDataToJsFile(path.join(dataPath, filename), exportName, mergedData);
     
-    console.log(`Updated ${filename} with ${mergedData.length} items`);
+    console.log(`Updated ${filename} with ${mergedData.length} items (${newData.length} new/updated)`);
+    return mergedData;
   } catch (error) {
     console.error(`Error updating data file ${filename}:`, error);
+    return existingData;
   }
 }
 
 async function readExistingData(filename) {
   try {
-    // Just read the file directly and parse its contents
-    // In a production environment, you'd want to use a more robust approach
     const filePath = path.join(dataPath, filename);
-    
-    try {
-      const fileContent = await fs.readFile(filePath, 'utf-8');
-      // This is a hacky way to parse the JS export into a JSON object
-      // In production, you'd use a proper JS parser or store data as JSON
-      const dataStartIndex = fileContent.indexOf('[');
-      const dataEndIndex = fileContent.lastIndexOf(']') + 1;
-      const jsonData = fileContent.substring(dataStartIndex, dataEndIndex);
-      
-      return JSON.parse(jsonData);
-    } catch (error) {
-      // If file doesn't exist or can't be parsed, return empty array
-      console.warn(`Warning: Could not read ${filename} - using empty array`);
-      return [];
-    }
+    return await loadDataFromJsFile(filePath);
   } catch (error) {
     console.error(`Error reading existing data from ${filename}:`, error);
     return [];

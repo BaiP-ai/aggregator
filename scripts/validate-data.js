@@ -11,6 +11,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadDataFromJsFile } from './utils/data-utils.js';
 
 // Get the directory path
 const __filename = fileURLToPath(import.meta.url);
@@ -36,22 +37,9 @@ const schemas = {
 async function loadData(filename) {
   try {
     const filePath = path.join(dataPath, filename);
-    
-    try {
-      const fileContent = await fs.readFile(filePath, 'utf-8');
-      // This is a hacky way to parse the JS export into a JSON object
-      // In production, you'd use a proper JS parser or store data as JSON
-      const dataStartIndex = fileContent.indexOf('[');
-      const dataEndIndex = fileContent.lastIndexOf(']') + 1;
-      const jsonData = fileContent.substring(dataStartIndex, dataEndIndex);
-      
-      return JSON.parse(jsonData);
-    } catch (error) {
-      console.error(`Error loading data from ${filename}:`, error);
-      return [];
-    }
+    return await loadDataFromJsFile(filePath);
   } catch (error) {
-    console.error(`Error reading file ${filename}:`, error);
+    console.error(`Error loading data from ${filename}:`, error);
     return [];
   }
 }

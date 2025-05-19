@@ -11,6 +11,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadDataFromJsFile, saveDataToJsFile } from './utils/data-utils.js';
 
 // Get the directory path
 const __filename = fileURLToPath(import.meta.url);
@@ -21,22 +22,9 @@ const processedPath = path.join(__dirname, '..', 'src', 'data', 'processed');
 async function loadData(filename) {
   try {
     const filePath = path.join(dataPath, filename);
-    
-    try {
-      const fileContent = await fs.readFile(filePath, 'utf-8');
-      // This is a hacky way to parse the JS export into a JSON object
-      // In production, you'd use a proper JS parser or store data as JSON
-      const dataStartIndex = fileContent.indexOf('[');
-      const dataEndIndex = fileContent.lastIndexOf(']') + 1;
-      const jsonData = fileContent.substring(dataStartIndex, dataEndIndex);
-      
-      return JSON.parse(jsonData);
-    } catch (error) {
-      console.error(`Error loading data from ${filename}:`, error);
-      return [];
-    }
+    return await loadDataFromJsFile(filePath);
   } catch (error) {
-    console.error(`Error reading file ${filename}:`, error);
+    console.error(`Error loading data from ${filename}:`, error);
     return [];
   }
 }
@@ -105,15 +93,11 @@ function generateAgentsByCategory(data) {
 async function saveProcessedData(filename, data) {
   try {
     const filePath = path.join(processedPath, filename);
-    
-    await fs.writeFile(
-      filePath,
-      `// This file is auto-generated - do not edit directly\nexport const ${filename.replace('.js', '')} = ${JSON.stringify(data, null, 2)};\n`
-    );
-    
-    console.log(`Saved processed data to ${filename}`);
+    const exportName = filename.replace('.js', '');
+    await saveDataToJsFile(filePath, exportName, data);
   } catch (error) {
     console.error(`Error saving processed data to ${filename}:`, error);
+    throw error;
   }
 }
 

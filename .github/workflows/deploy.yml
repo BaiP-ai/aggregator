@@ -44,5 +44,5 @@ jobs:
           folder: dist
           repository-name: BaiP-ai/aggregator
           branch: gh-pages
-          token: ${{ secrets.GH_PAT }}  # You need to create this secret in your repository
+          token: ${{ secrets.GH_PAT }}
           clean: true
