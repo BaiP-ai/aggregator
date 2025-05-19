@@ -22,9 +22,16 @@ console.log('Root directory:', rootDir);
 const buildEnv = {
   ...process.env,
   NODE_ENV: 'production',
-  DISABLE_API_CALLS: 'true',
-  OPENAI_API_KEY: 'dummy-key-for-build-process'
+  // Only set DISABLE_API_CALLS to true if no API key is available
+  DISABLE_API_CALLS: process.env.OPENAI_API_KEY ? 'false' : 'true'
 };
+
+// Log status (but not the actual key value)
+if (process.env.OPENAI_API_KEY) {
+  console.log('OPENAI_API_KEY is available from GitHub secrets');
+} else {
+  console.log('No OPENAI_API_KEY found - API calls will be disabled');
+}
 
 // Run the build
 console.log('Running Astro build...');

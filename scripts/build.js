@@ -15,17 +15,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 
-// Create a .env file with a dummy OpenAI API key if it doesn't exist
-// This is only for the build process
-try {
-  const envPath = path.resolve(rootDir, '.env');
-  
-  if (!fs.existsSync(envPath)) {
-    console.log('Creating temporary .env file for build process...');
-    fs.writeFileSync(envPath, 'OPENAI_API_KEY=dummy-key-for-build-process\n');
-  }
-} catch (error) {
-  console.error('Error creating .env file:', error);
+// Check if OpenAI API key is available in environment
+if (!process.env.OPENAI_API_KEY) {
+  console.warn('Warning: OPENAI_API_KEY environment variable not found. Some features may not work.');
 }
 
 // Run process-data
