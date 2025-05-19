@@ -21,24 +21,34 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const dataPath = path.join(__dirname, '..', 'src', 'data');
 
-// Real API endpoints - these will use the OPENAI_API_KEY from environment variables
+// URLs for data sources - these are placeholders until real APIs are implemented
+// Keep these as examples for future implementation
 const DATA_SOURCES = {
-  tools: 'https://api.baip.ai/v1/ai-tools',
-  categories: 'https://api.baip.ai/v1/categories',
-  agents: 'https://api.baip.ai/v1/ai-agents',
+  tools: 'https://api.example.com/ai-tools', // Replace with actual API endpoint when available
+  categories: 'https://api.example.com/categories', // Replace with actual API endpoint when available
+  agents: 'https://api.example.com/ai-agents', // Replace with actual API endpoint when available
 };
+
+// Flag to indicate whether to use mock data or attempt API calls
+// This should be set to true until real APIs are implemented
+const USE_MOCK_DATA = true;
 
 async function fetchData(url) {
   try {
-    console.log(`Fetching data from ${url}...`);
+    console.log(`Processing data source: ${url}...`);
     
-    // Skip API calls if DISABLE_API_CALLS is set to 'true'
-    if (process.env.DISABLE_API_CALLS === 'true') {
-      console.log('API calls disabled. Returning empty array.');
+    // If USE_MOCK_DATA is true or DISABLE_API_CALLS is set, use mock data
+    if (USE_MOCK_DATA || process.env.DISABLE_API_CALLS === 'true') {
+      console.log('Using mock data (no API call made)');
+      
+      // Return empty array as mock data
+      // In a real implementation, you might want to return some sample data
+      // or use OpenAI to generate mock data for development
       return [];
     }
     
-    // Make the actual API call using the OPENAI_API_KEY
+    // This code will only run when real APIs are implemented and USE_MOCK_DATA is false
+    console.log('Attempting real API call...');
     const response = await fetch(url, {
       headers: {
         'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
@@ -53,7 +63,7 @@ async function fetchData(url) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error(`Error fetching data from ${url}:`, error);
+    console.error(`Error processing data from ${url}:`, error);
     return [];
   }
 }
