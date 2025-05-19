@@ -57,4 +57,18 @@
   .tag {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100;
   }
+  
+  /* Added styles from the main BAIP website */
+  .cta-button {
+    @apply bg-gradient-to-r from-primary to-secondary px-6 py-3 rounded-full font-medium text-white shadow-lg transition-all duration-300 inline-block;
+  }
+
+  .cta-button:hover {
+    box-shadow: 0 0 15px 5px rgba(37, 99, 235, 0.4);
+  }
+  
+  /* Border gradient for navbar */
+  .border-b-gradient {
+    border-image: linear-gradient(to right, #2563EB, #7C3AED) 1;
+  }
 }
