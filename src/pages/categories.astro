@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import CategoryCard from '../components/CategoryCard.astro';
+import { categories } from '../data/categories.js';
+import { getSitePath } from '../utils/paths.js';
+
+// Sort categories alphabetically for better browsing
+const sortedCategories = [...categories].sort((a, b) => a.name.localeCompare(b.name));
+---
+
+<Layout title="AI Tool Categories">
+  <Hero 
+    title="AI Tool Categories" 
+    subtitle="Browse our comprehensive collection of enterprise AI tools by category"
+    showSearch={false}
+  />
+  
+  <section class="py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {sortedCategories.map((category) => (
+          <CategoryCard category={category} />
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

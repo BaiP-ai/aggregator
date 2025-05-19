@@ -1,0 +1,48 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - main  # or your default branch
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight UTC
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Fetch data
+        run: node scripts/fetch-data.js
+      
+      - name: Validate data
+        run: node scripts/validate-data.js
+      
+      - name: Process data
+        run: node scripts/process-data.js
+      
+      - name: Build site
+        run: node scripts/ci-build.js
+        env:
+          NODE_ENV: production
+          DISABLE_API_CALLS: true
+          OPENAI_API_KEY: dummy-key-for-build
+      
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
+          repository-name: BaiP-ai/aggregator
+          branch: gh-pages
+          token: ${{ secrets.GH_PAT }}  # You need to create this secret in your repository
+          clean: true

@@ -1,0 +1,130 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import { getSitePath } from '../utils/paths.js';
+---
+
+<Layout title="About BAIP.AI Aggregator">
+  <Hero 
+    title="About Our AI Aggregator" 
+    subtitle="Helping Fortune 500 companies navigate the complex landscape of enterprise AI tools"
+    showSearch={false}
+  />
+  
+  <section class="py-12">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 mb-8">
+          <h2 class="text-2xl font-bold mb-4">Our Mission</h2>
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
+            At BAIP.AI, our mission is to help Fortune 500 companies navigate the rapidly evolving landscape of enterprise AI tools. We understand that with thousands of AI solutions available, finding the right tools for your business needs can be overwhelming.
+          </p>
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
+            Our AI Aggregator platform addresses this challenge by curating the best enterprise-ready AI tools across various business functions and making them easily discoverable. We rigorously evaluate each tool for security, scalability, and enterprise integration capabilities to ensure they meet the high standards required by Fortune 500 companies.
+          </p>
+          <p class="text-gray-700 dark:text-gray-300">
+            Beyond simple aggregation, we also provide custom AI agents built on powerful foundation models like GROQ, specifically designed for enterprise use cases. These agents integrate with your existing systems and workflows to deliver immediate value.
+          </p>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 mb-8">
+          <h2 class="text-2xl font-bold mb-4">Our Approach</h2>
+          <div class="space-y-6">
+            <div class="flex">
+              <div class="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-md flex items-center justify-center mr-4">
+                <span class="text-xl font-bold text-blue-600 dark:text-blue-300">1</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold mb-2">Comprehensive Curation</h3>
+                <p class="text-gray-700 dark:text-gray-300">
+                  We continuously research and evaluate the AI tool landscape to identify solutions that meet enterprise requirements for security, compliance, scalability, and integration capabilities.
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex">
+              <div class="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-md flex items-center justify-center mr-4">
+                <span class="text-xl font-bold text-blue-600 dark:text-blue-300">2</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold mb-2">Business-Focused Categorization</h3>
+                <p class="text-gray-700 dark:text-gray-300">
+                  We organize AI tools into business-focused categories that align with how enterprises operate, making it easy to find solutions for specific departments or functions.
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex">
+              <div class="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-md flex items-center justify-center mr-4">
+                <span class="text-xl font-bold text-blue-600 dark:text-blue-300">3</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold mb-2">Custom AI Agents</h3>
+                <p class="text-gray-700 dark:text-gray-300">
+                  We develop specialized AI agents that address specific enterprise needs, from executive assistance to detailed market research, powered by cutting-edge foundation models.
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex">
+              <div class="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-md flex items-center justify-center mr-4">
+                <span class="text-xl font-bold text-blue-600 dark:text-blue-300">4</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold mb-2">Enterprise Integration</h3>
+                <p class="text-gray-700 dark:text-gray-300">
+                  We prioritize tools and develop agents that integrate seamlessly with the existing enterprise software ecosystem, minimizing disruption and maximizing ROI.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
+          <h2 class="text-2xl font-bold mb-4">Why Choose BAIP.AI Aggregator?</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="border-l-4 border-green-500 pl-4">
+              <h3 class="text-lg font-semibold mb-2">Enterprise Focus</h3>
+              <p class="text-gray-700 dark:text-gray-300">
+                Specifically designed for the needs and requirements of Fortune 500 companies
+              </p>
+            </div>
+            
+            <div class="border-l-4 border-green-500 pl-4">
+              <h3 class="text-lg font-semibold mb-2">Comprehensive Coverage</h3>
+              <p class="text-gray-700 dark:text-gray-300">
+                Curated collection of tools across all business functions and departments
+              </p>
+            </div>
+            
+            <div class="border-l-4 border-green-500 pl-4">
+              <h3 class="text-lg font-semibold mb-2">Custom AI Agents</h3>
+              <p class="text-gray-700 dark:text-gray-300">
+                Specialized AI agents built on powerful foundation models for specific business needs
+              </p>
+            </div>
+            
+            <div class="border-l-4 border-green-500 pl-4">
+              <h3 class="text-lg font-semibold mb-2">Security & Compliance</h3>
+              <p class="text-gray-700 dark:text-gray-300">
+                All tools and agents vetted for enterprise security and compliance requirements
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="py-12 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-6 text-white">Ready to Transform Your Business with AI?</h2>
+      <p class="text-xl mb-8 text-blue-100 max-w-3xl mx-auto">
+        Join Fortune 500 companies that are using our AI Aggregator to discover and implement the best AI tools for their business needs.
+      </p>
+      <a href={getSitePath('/enterprise')} class="btn py-3 px-6 bg-white text-blue-600 hover:bg-blue-50 font-semibold rounded-lg text-lg">
+        Request Enterprise Access
+      </a>
+    </div>
+  </section>
+</Layout>

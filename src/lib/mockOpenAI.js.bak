@@ -1,0 +1,22 @@
+/**
+ * Mock OpenAI client for build process
+ * This avoids API calls during build and prevents errors
+ */
+export default class MockOpenAI {
+  constructor(options) {
+    this.options = options;
+    this.chat = {
+      completions: {
+        create: async () => ({
+          choices: [
+            {
+              message: {
+                content: "This is a placeholder response. The OpenAI API is not available in this environment."
+              }
+            }
+          ]
+        })
+      }
+    };
+  }
+}

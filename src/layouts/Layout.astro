@@ -1,0 +1,36 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const { title = 'AI Aggregator for Fortune 500 Companies', description = 'A comprehensive platform for discovering enterprise-ready AI tools' } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL || '/';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content={description}>
+  <link rel="icon" type="image/svg+xml" href={`${baseUrl}/favicon.svg`} />
+  <title>{title} | BAIP.AI</title>
+  <base href={baseUrl} />
+  
+  <!-- Simple path handling script -->
+  <script define:vars={{baseUrl}}>
+    // Set base path for assets
+    window.BASE_PATH = baseUrl;
+  </script>
+  
+  <!-- Load the path fixer script -->
+  <script src={`${baseUrl}/js/base-path.js`}></script>
+</head>
+<body class="bg-light dark:bg-dark min-h-screen flex flex-col">
+  <Header />
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <slot />
+  </main>
+  <Footer />
+</body>
+</html>

@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getSitePath } from '../utils/paths.js';
+---
+
+<Layout title="Page Not Found">
+  <div class="container mx-auto px-4 py-16 text-center">
+    <h1 class="text-3xl md:text-4xl font-bold mb-4">404 - Page Not Found</h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
+      The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
+    </p>
+    
+    <div class="mb-8">
+      <img 
+        src={getSitePath('/images/404.svg')} 
+        alt="404 Illustration" 
+        class="mx-auto max-w-md w-full"
+        onerror="this.style.display='none'"
+      />
+    </div>
+    
+    <div class="flex flex-col sm:flex-row justify-center gap-4">
+      <a href={getSitePath('/')} class="btn py-3 px-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg text-lg">
+        Go to Home
+      </a>
+      <a href={getSitePath('/categories')} class="btn py-3 px-6 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg text-lg">
+        Browse Categories
+      </a>
+    </div>
+    
+    <script>
+      // Check if we need to handle path corrections
+      document.addEventListener('DOMContentLoaded', function() {
+        // Get the current path from the URL
+        const currentPath = window.location.pathname;
+        
+        // Check if the URL is missing the base path
+        if (!currentPath.startsWith('/aggregator/') && !currentPath.startsWith('/aggregator')) {
+          // Try to fix the URL by adding the base path
+          const fixedPath = '/aggregator' + (currentPath === '/' ? '' : currentPath);
+          window.location.href = fixedPath;
+        }
+      });
+    </script>
+  </div>
+</Layout>

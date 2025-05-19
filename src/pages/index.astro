@@ -1,0 +1,164 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import CategoryCard from '../components/CategoryCard.astro';
+import ToolCard from '../components/ToolCard.astro';
+import AgentCard from '../components/AgentCard.astro';
+import { categories } from '../data/categories.js';
+import { tools } from '../data/tools.js';
+import { agents } from '../data/agents.js';
+import { getSitePath } from '../utils/paths.js';
+
+// Try to load processed data if available
+let featuredTools = [];
+let topCategories = [];
+let featuredAgents = [];
+
+try {
+  const { featured } = await import('../data/processed/featured.js');
+  featuredTools = featured.featuredTools;
+  topCategories = featured.featuredCategories;
+  featuredAgents = featured.featuredAgents;
+} catch (e) {
+  // Fall back to simple filtering if processed data isn't available
+  console.warn('Processed data not available, falling back to simple filtering');
+  featuredTools = tools.filter((tool, index) => index < 6);
+  topCategories = categories.filter((category, index) => index < 4);
+  featuredAgents = agents.filter((agent, index) => index < 3);
+}
+---
+
+<Layout title="AI Aggregator - Discover the Best Enterprise AI Tools">
+  <Hero />
+  
+  <!-- Top Categories Section -->
+  <section class="py-12 md:py-16">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl md:text-3xl font-bold">Top Categories</h2>
+        <a href={getSitePath('/categories')} class="text-primary hover:text-blue-700 flex items-center">
+          View All
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {topCategories.map((category) => (
+          <CategoryCard category={category} />
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Featured Tools Section -->
+  <section class="py-12 md:py-16 bg-gray-50 dark:bg-gray-900">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl md:text-3xl font-bold">Featured AI Tools</h2>
+        <a href={getSitePath('/tools')} class="text-primary hover:text-blue-700 flex items-center">
+          View All
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {featuredTools.map((tool) => (
+          <ToolCard tool={tool} />
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- AI Agents Section -->
+  <section class="py-12 md:py-16">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl md:text-3xl font-bold">AI Agents</h2>
+        <a href={getSitePath('/agents')} class="text-primary hover:text-blue-700 flex items-center">
+          View All
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {featuredAgents.map((agent) => (
+          <AgentCard agent={agent} />
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Enterprise Benefits Section -->
+  <section class="py-12 md:py-16 bg-gray-50 dark:bg-gray-900">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-2xl md:text-3xl font-bold mb-4">Enterprise Benefits</h2>
+        <p class="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+          Our AI Aggregator is designed specifically for Fortune 500 companies looking to transform their operations with AI.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+          <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 dark:text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Enterprise-Grade Security</h3>
+          <p class="text-gray-600 dark:text-gray-400">
+            All tools are vetted for enterprise security and compliance requirements, ensuring your data remains protected.
+          </p>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+          <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600 dark:text-green-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Seamless Integration</h3>
+          <p class="text-gray-600 dark:text-gray-400">
+            Tools that integrate with your existing enterprise software stack, minimizing disruption and maximizing ROI.
+          </p>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+          <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600 dark:text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Custom AI Agents</h3>
+          <p class="text-gray-600 dark:text-gray-400">
+            Access to specialized AI agents built for enterprise needs, from executive assistants to data analysis.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Section -->
+  <section class="py-16 md:py-24 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6 text-white">Ready to Transform Your Business with AI?</h2>
+      <p class="text-xl mb-8 text-blue-100 max-w-3xl mx-auto">
+        Join Fortune 500 companies that are using our AI Aggregator to discover and implement the best AI tools for their business needs.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href={getSitePath('/enterprise')} class="btn py-3 px-6 bg-white text-blue-600 hover:bg-blue-50 font-semibold rounded-lg text-lg">
+          Enterprise Access
+        </a>
+        <a href={getSitePath('/categories')} class="btn py-3 px-6 bg-transparent border-2 border-white text-white hover:bg-white hover:bg-opacity-10 font-semibold rounded-lg text-lg">
+          Explore Categories
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

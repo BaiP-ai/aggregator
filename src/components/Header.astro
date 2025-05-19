@@ -1,0 +1,66 @@
+---
+---
+
+<header class="bg-white dark:bg-gray-900 shadow-sm">
+  <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+    <div class="flex items-center">
+      <a href={import.meta.env.BASE_URL || "/"} class="flex items-center">
+        <img src={`${import.meta.env.BASE_URL}/images/baip-logo.svg`} alt="BAIP.AI Logo" class="h-8 w-auto mr-3" />
+        <span class="text-xl font-bold text-gray-900 dark:text-white">AI Aggregator</span>
+      </a>
+    </div>
+    
+    <nav class="hidden md:flex space-x-8">
+      <a href={import.meta.env.BASE_URL || "/"} class="text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-white">
+        Home
+      </a>
+      <a href={`${import.meta.env.BASE_URL}/categories`} class="text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-white">
+        Categories
+      </a>
+      <a href={`${import.meta.env.BASE_URL}/agents`} class="text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-white">
+        AI Agents
+      </a>
+      <a href={`${import.meta.env.BASE_URL}/about`} class="text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-white">
+        About
+      </a>
+    </nav>
+    
+    <div class="flex items-center">
+      <button class="bg-primary hover:bg-blue-700 text-white py-2 px-4 rounded-md text-sm">
+        Enterprise Access
+      </button>
+      
+      <button id="mobile-menu-button" class="md:hidden ml-4 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Mobile menu, show/hide based on menu state -->
+  <div id="mobile-menu" class="md:hidden hidden px-2 pt-2 pb-3 space-y-1">
+    <a href={import.meta.env.BASE_URL || "/"} class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-white">
+      Home
+    </a>
+    <a href={`${import.meta.env.BASE_URL}/categories`} class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-white">
+      Categories
+    </a>
+    <a href={`${import.meta.env.BASE_URL}/agents`} class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-white">
+      AI Agents
+    </a>
+    <a href={`${import.meta.env.BASE_URL}/about`} class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-white">
+      About
+    </a>
+  </div>
+</header>
+
+<script>
+  // Toggle mobile menu
+  document.getElementById('mobile-menu-button')?.addEventListener('click', () => {
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenu) {
+      mobileMenu.classList.toggle('hidden');
+    }
+  });
+</script>
