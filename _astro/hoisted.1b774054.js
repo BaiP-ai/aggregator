@@ -1,1 +1,0 @@
-import"./hoisted.4ecd7bba.js";document.addEventListener("DOMContentLoaded",function(){const t=window.location.pathname;if(!t.startsWith("/aggregator/")&&!t.startsWith("/aggregator")){const a="/aggregator"+(t==="/"?"":t);window.location.href=a}});
