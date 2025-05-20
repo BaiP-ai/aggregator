@@ -1,0 +1,81 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - main  # or your default branch
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight UTC
+
+# If you're deploying to the main repository's GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  # Build job - use custom scripts for data preparation
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      # Create .env file for build process
+      - name: Create .env file
+        run: |
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
+      
+      # Run the data preparation scripts
+      - name: Fetch data
+        run: node scripts/fetch-data.js
+      
+      - name: Validate data
+        run: node scripts/validate-data.js
+      
+      - name: Process data
+        run: node scripts/process-data.js
+      
+      # Option 1: If deploying to the SAME repository's GitHub Pages
+      # Use Astro's official action (uncomment if using this approach)
+      # - name: Install, build, and upload your site
+      #   uses: withastro/action@v3
+      #   with:
+      #     path: . # The root location of your Astro project inside the repository
+      #     node-version: 18 # The specific version of Node that should be used to build your site
+      #     package-manager: npm # The Node package manager that should be used to install dependencies
+
+      # Option 2: If using custom build script and deploying to a DIFFERENT repository
+      # This is your current approach
+      - name: Build site with custom script
+        run: node scripts/ci-build.js
+        env:
+          NODE_ENV: production
+          BASE_URL: /aggregator
+          SITE: https://www.baip.ai
+          DISABLE_API_CALLS: true
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      
+      # For deploying to a different repository (your current setup)
+      - name: Deploy to GitHub Pages in different repository
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
+          repository-name: BaiP-ai/aggregator
+          branch: gh-pages
+          token: ${{ secrets.GH_PAT }}
+          clean: true
+      
+      # Option 3: If deploying to this repository's GitHub Pages
+      # Use GitHub's official Pages deployment action (uncomment if using this approach)
+      # - name: Deploy to GitHub Pages
+      #   id: deployment
+      #   uses: actions/deploy-pages@v4
