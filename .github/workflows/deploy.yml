@@ -35,8 +35,10 @@ jobs:
         run: node scripts/ci-build.js
         env:
           NODE_ENV: production
+          BASE_URL: /aggregator
+          SITE: https://baip-ai.github.io
           DISABLE_API_CALLS: true
-          OPENAI_API_KEY: dummy-key-for-build
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4

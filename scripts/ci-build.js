@@ -36,6 +36,14 @@ if (process.env.OPENAI_API_KEY) {
 // Run the build
 console.log('Running Astro build...');
 try {
+  console.log('Using build command: npx astro build');
+  console.log('Environment vars set:', JSON.stringify({
+    NODE_ENV: buildEnv.NODE_ENV,
+    DISABLE_API_CALLS: buildEnv.DISABLE_API_CALLS,
+    // Don't log the actual key, just whether it exists
+    OPENAI_API_KEY: buildEnv.OPENAI_API_KEY ? '[KEY SET]' : '[NOT SET]'
+  }));
+  
   execSync('npx astro build', { 
     stdio: 'inherit', 
     cwd: rootDir,
@@ -44,5 +52,6 @@ try {
   console.log('Build completed successfully!');
 } catch (error) {
   console.error('Error running build:', error);
+  console.error('Build command failed. Check the Astro build logs above for details.');
   process.exit(1);
 }
