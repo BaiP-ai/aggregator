@@ -1,0 +1,82 @@
+name: Deploy to GitHub Pages
+on:
+  # Trigger the workflow every time you push to the `main` branch
+  # Using a different branch name? Replace `main` with your branch's name
+  push:
+    branches: [ main ]
+  # Run daily at midnight UTC to keep data fresh
+  schedule:
+    - cron: '0 0 * * *'
+  # Allows you to run this workflow manually from the Actions tab on GitHub.
+  workflow_dispatch:
+
+# Allow this job to clone the repo and create a page deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout your repository using git
+        uses: actions/checkout@v4
+
+      # Set up environment for custom data preparation
+      - name: Create .env file
+        run: |
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
+
+      # Run the data preparation scripts
+      - name: Fetch data
+        run: node scripts/fetch-data.js
+
+      - name: Validate data
+        run: node scripts/validate-data.js
+
+      - name: Process data
+        run: node scripts/process-data.js
+
+      # Use the official Astro action to build the site
+      - name: Install, build, and upload your site
+        uses: withastro/action@v3
+        with:
+          # The root location of your Astro project inside the repository
+          path: .
+          # The specific version of Node that should be used to build your site
+          node-version: 18
+          # The Node package manager that should be used to install dependencies
+          package-manager: npm
+        env:
+          # Pass environment variables to the build
+          BASE_URL: /aggregator
+          SITE: https://www.baip.ai
+          DISABLE_API_CALLS: true
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # Option 1: Deploy using GitHub's official Pages deployment action
+      # Use this if deploying to the SAME repository's GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      # Option 2: If you need to deploy to a DIFFERENT repository,
+      # uncomment these lines instead and comment out the above step
+      # - name: Checkout repository
+      #   uses: actions/checkout@v4
+      # - name: Deploy to GitHub Pages in different repository
+      #   uses: JamesIves/github-pages-deploy-action@v4
+      #   with:
+      #     folder: dist
+      #     repository-name: BaiP-ai/aggregator
+      #     branch: gh-pages
+      #     token: ${{ secrets.GH_PAT }}
+      #     clean: true
