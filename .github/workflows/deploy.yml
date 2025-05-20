@@ -17,7 +17,7 @@ permissions:
   id-token: write
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout your repository using git
@@ -47,30 +47,28 @@ jobs:
       - name: Process data
         run: node scripts/process-data.js
 
-      # Use the official Astro action to build the site
-      - name: Install, build, and upload your site
-        uses: withastro/action@v3
-        with:
-          # The root location of your Astro project inside the repository
-          path: .
-          # The specific version of Node that should be used to build your site
-          node-version: 18
-          # The Node package manager that should be used to install dependencies
-          package-manager: npm
+      # Build the site using npm run build (Astro's build command)
+      - name: Build site
+        run: npm run build
         env:
           # Pass environment variables to the build
           BASE_URL: /aggregator
           SITE: https://www.baip.ai
           DISABLE_API_CALLS: true
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      
+      # Verify dist directory exists
+      - name: Verify dist directory
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "::error::dist directory not found!"
+            ls -la
+            exit 1
+          fi
+          echo "dist directory found - contents:"
+          ls -la dist/
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       # Deploy to the BaiP-ai/aggregator repository
-      - name: Checkout repository
-        uses: actions/checkout@v4
       - name: Deploy to GitHub Pages in BaiP-ai/aggregator repository
         uses: JamesIves/github-pages-deploy-action@v4
         with:
