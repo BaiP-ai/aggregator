@@ -1,7 +1,7 @@
 // Astro Base Path Helper
 (function() {
   // Base path is set from Layout.astro
-  var basePath = window.BASE_PATH || '/';
+  var basePath = window.BASE_PATH || '/aggregator';
 
   // Add helper functions to the window object
   window.getSitePath = function(path) {
