@@ -49,8 +49,8 @@ jobs:
           if git remote | grep -q public; then
             git remote remove public
           fi
-          git remote add public https://${{ secrets.GH_PAT }}@github.com/BaiP-ai/aggregator.git
-          
+          git remote add public https://x-access-token:${{ secrets.GH_PAT }}@github.com/BaiP-ai/aggregator.git
+    
           if git push public $BRANCH_NAME; then
             echo "✅ Successfully pushed to staging branch: $BRANCH_NAME"
           else
