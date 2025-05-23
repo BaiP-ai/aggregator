@@ -119,11 +119,19 @@ async function main() {
     
     // Process company logos (download new ones, clean up unused ones)
     console.log('Processing company logos...');
-    await processCompanyLogos(data.tools, data.agents);
+    try {
+      await processCompanyLogos(data.tools, data.agents);
+      console.log('✅ Logo processing completed successfully');
+    } catch (error) {
+      console.error('❌ Error during logo processing:', error);
+      // Continue with data processing even if logo processing fails
+    }
     
     // Save updated data with correct logo paths
+    console.log('Saving updated data files...');
     await saveDataToJsFile(path.join(dataPath, 'tools.js'), 'tools', data.tools);
     await saveDataToJsFile(path.join(dataPath, 'agents.js'), 'agents', data.agents);
+    console.log('✅ Data files saved successfully');
     
     // Generate processed data
     console.log('Generating processed data...');
