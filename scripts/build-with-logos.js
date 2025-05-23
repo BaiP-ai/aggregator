@@ -15,9 +15,16 @@ const projectRoot = path.join(__dirname, '..');
 
 async function buildWithLogos() {
   try {
-    console.log('🚀 Starting build with logo management...');
+    console.log('🚀 Starting build with complete data processing and logo management...');
     
-    // Step 1: Run Astro build
+    // Step 1: Process data and download logos
+    console.log('📊 Processing data and downloading logos...');
+    execSync('node scripts/fetch-data.js', { cwd: projectRoot, stdio: 'inherit' });
+    execSync('node scripts/ensure-logo-fields.js', { cwd: projectRoot, stdio: 'inherit' });
+    execSync('node scripts/process-data.js', { cwd: projectRoot, stdio: 'inherit' });
+    execSync('node scripts/validate-data.js', { cwd: projectRoot, stdio: 'inherit' });
+    
+    // Step 2: Run Astro build
     console.log('📦 Building Astro site...');
     execSync('npm run build', { 
       cwd: projectRoot, 
