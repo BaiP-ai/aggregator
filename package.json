@@ -16,7 +16,8 @@
     "process-data": "node scripts/process-data.js",
     "generate-site": "node scripts/build.js",
     "download-logos": "node scripts/download-logos.js",
-    "download-logos:force": "node scripts/download-logos.js --force"
+    "download-logos:force": "node scripts/download-logos.js --force",
+    "sync-logos": "node scripts/sync-logos.js"
   },
   "dependencies": {
     "@astrojs/solid-js": "^3.0.2",

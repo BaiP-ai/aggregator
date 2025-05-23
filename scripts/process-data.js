@@ -12,6 +12,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadDataFromJsFile, saveDataToJsFile } from './utils/data-utils.js';
+import { processCompanyLogos } from './utils/logo-manager.js';
 
 // Get the directory path
 const __filename = fileURLToPath(import.meta.url);
@@ -115,6 +116,14 @@ async function main() {
       categories: await loadData('categories.js'),
       agents: await loadData('agents.js')
     };
+    
+    // Process company logos (download new ones, clean up unused ones)
+    console.log('Processing company logos...');
+    await processCompanyLogos(data.tools, data.agents);
+    
+    // Save updated data with correct logo paths
+    await saveDataToJsFile(path.join(dataPath, 'tools.js'), 'tools', data.tools);
+    await saveDataToJsFile(path.join(dataPath, 'agents.js'), 'agents', data.agents);
     
     // Generate processed data
     console.log('Generating processed data...');

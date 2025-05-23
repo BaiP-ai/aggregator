@@ -17,6 +17,7 @@ import { loadDataFromJsFile } from './utils/data-utils.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const dataPath = path.join(__dirname, '..', 'src', 'data');
+const logoPath = path.join(__dirname, '..', 'public', 'images', 'logos');
 
 // Data schemas - simple version for demonstration
 const schemas = {
@@ -109,6 +110,26 @@ function validateReferentialIntegrity(data) {
   return errors;
 }
 
+async function validateLogoFiles(data) {
+  const errors = [];
+  const { tools, agents } = data;
+  const allCompanies = [...tools, ...agents];
+  
+  for (const company of allCompanies) {
+    if (company.logo && company.logo !== 'images/logos/placeholder.svg') {
+      const logoFilePath = path.join(__dirname, '..', 'public', company.logo);
+      
+      try {
+        await fs.access(logoFilePath);
+      } catch (error) {
+        errors.push(`Missing logo file for ${company.name}: ${company.logo}`);
+      }
+    }
+  }
+  
+  return errors;
+}
+
 async function main() {
   try {
     console.log('Starting data validation process...');
@@ -137,6 +158,11 @@ async function main() {
     // Check referential integrity
     const integrityErrors = validateReferentialIntegrity(data);
     allErrors.push(...integrityErrors);
+    
+    // Check logo files exist
+    console.log('Validating logo files...');
+    const logoErrors = await validateLogoFiles(data);
+    allErrors.push(...logoErrors);
     
     // Report results
     if (allErrors.length > 0) {
