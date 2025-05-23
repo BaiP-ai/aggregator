@@ -76,15 +76,39 @@ jobs:
             echo "Available directories:"
             find . -name "logos" -type d
           fi
+          
+          echo "📂 Full public directory structure:"
+          find public/ -type f | head -20
 
       - name: Validate data
         run: node scripts/validate-data.js
 
-      - name: Build Astro site
-        run: npm run build
+      - name: Build Astro site with logos
+        run: npm run build-with-logos
         env:
           BASE_URL: /aggregator
           SITE: https://www.baip.ai
+
+      - name: Ensure logos are copied to dist
+        run: |
+          echo "🔧 Ensuring logos are properly copied to dist..."
+          
+          # Check if public/images/logos exists and has content
+          if [ -d "public/images/logos" ] && [ "$(ls -A public/images/logos)" ]; then
+            echo "✅ Source logos found in public/images/logos"
+            echo "📊 Source logos: $(find public/images/logos/ -name '*.png' -o -name '*.svg' -o -name '*.jpg' | wc -l)"
+            
+            # Ensure dist/images/logos directory exists
+            mkdir -p dist/images/logos
+            
+            # Copy all logos from public to dist (in case Astro didn't copy them)
+            cp -r public/images/logos/* dist/images/logos/ 2>/dev/null || echo "⚠️  No files to copy or already copied"
+            
+            echo "✅ Manual copy completed"
+            echo "📊 Dist logos after copy: $(find dist/images/logos/ -name '*.png' -o -name '*.svg' -o -name '*.jpg' | wc -l)"
+          else
+            echo "❌ No source logos found in public/images/logos"
+          fi
 
       - name: Verify dist directory and logos
         run: |
@@ -94,8 +118,10 @@ jobs:
             echo "📁 dist contents:"
             ls -la dist/
             if [ -d "dist/images/logos" ]; then
-              echo "✅ Logo directory copied to dist"
+              echo "✅ Logo directory exists in dist"
               echo "📊 Logos in dist: $(find dist/images/logos/ -name '*.png' -o -name '*.svg' -o -name '*.jpg' | wc -l)"
+              echo "📁 Logo files:"
+              ls -la dist/images/logos/ | head -10
             else
               echo "❌ Logo directory missing from dist"
               echo "Available image directories in dist:"
