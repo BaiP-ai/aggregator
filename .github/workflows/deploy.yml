@@ -1,10 +1,17 @@
-name: Deploy to GitHub Pages
+name: Deploy AI Aggregator to GitHub Pages
+# This workflow is specifically for the baip-ai/aggregator repository
+# It includes multiple safeguards to ensure it only runs on the correct repository:
+# 1. Job-level 'if' conditions checking github.repository
+# 2. Explicit repository verification step with error handling
 
 on:
   # Trigger the workflow every time you push to the `main` branch
-  # Using a different branch name? Replace `main` with your branch’s name
-  # push:
-  #   branches: [ main ]
+  # Using a different branch name? Replace `main` with your branch's name
+  push:
+    branches: [ main ]
+  # Run daily at midnight UTC to keep data fresh
+  schedule:
+    - cron: '0 0 * * *'
   # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
 
@@ -17,19 +24,57 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Only run on the baip-ai/aggregator repository
+    if: github.repository == 'baip-ai/aggregator'
     steps:
+      - name: Verify repository
+        run: |
+          echo "Running on repository: ${{ github.repository }}"
+          echo "Expected repository: baip-ai/aggregator"
+          if [ "${{ github.repository }}" != "baip-ai/aggregator" ]; then
+            echo "ERROR: This workflow should only run on baip-ai/aggregator"
+            exit 1
+          fi
+          
       - name: Checkout your repository using git
         uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      # Set up environment for custom data preparation
+      - name: Create .env file
+        run: |
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
+
+      # Run the data preparation scripts
+      - name: Fetch data
+        run: node scripts/fetch-data.js
+
+      - name: Validate data
+        run: node scripts/validate-data.js
+
+      - name: Process data
+        run: node scripts/process-data.js
+
       - name: Install, build, and upload your site
         uses: withastro/action@v3
-        # with:
-          # path: . # The root location of your Astro project inside the repository. (optional)
-          # node-version: 20 # The specific version of Node that should be used to build your site. Defaults to 20. (optional)
-          # package-manager: pnpm@latest # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
+        with:
+          path: . # The root location of your Astro project inside the repository
+          node-version: 18 # The specific version of Node that should be used to build your site
+          # package-manager: npm # The Node package manager that should be used to install dependencies and build your site
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    # Only run on the baip-ai/aggregator repository
+    if: github.repository == 'baip-ai/aggregator'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
