@@ -89,6 +89,10 @@
     background-color: rgba(37, 99, 235, 0.1);
   }
   
+  .bg-primary\/20 {
+    background-color: rgba(37, 99, 235, 0.2);
+  }
+  
   .bg-secondary {
     background-color: #7C3AED;
   }
@@ -103,6 +107,30 @@
   
   .text-secondary {
     color: #7C3AED;
+  }
+  
+  .text-dark {
+    color: #050816;
+  }
+  
+  .text-dark\/60 {
+    color: rgba(5, 8, 22, 0.6);
+  }
+  
+  .text-dark\/80 {
+    color: rgba(5, 8, 22, 0.8);
+  }
+  
+  .text-light {
+    color: #F8FAFC;
+  }
+  
+  .bg-light {
+    background-color: #F8FAFC;
+  }
+  
+  .from-light {
+    --tw-gradient-from: #F8FAFC;
   }
   
   .border-primary {
