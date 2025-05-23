@@ -3,9 +3,17 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
   body {
     @apply text-gray-800 dark:text-gray-200;
     font-family: 'Inter', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
   }
   
   h1 {
@@ -70,5 +78,38 @@
   /* Border gradient for navbar */
   .border-b-gradient {
     border-image: linear-gradient(to right, #2563EB, #7C3AED) 1;
+  }
+
+  /* Essential colors for component rendering */
+  .bg-primary {
+    background-color: #2563EB;
+  }
+  
+  .bg-primary\/10 {
+    background-color: rgba(37, 99, 235, 0.1);
+  }
+  
+  .bg-secondary {
+    background-color: #7C3AED;
+  }
+  
+  .bg-secondary\/20 {
+    background-color: rgba(124, 58, 237, 0.2);
+  }
+  
+  .text-primary {
+    color: #2563EB;
+  }
+  
+  .text-secondary {
+    color: #7C3AED;
+  }
+  
+  .border-primary {
+    border-color: #2563EB;
+  }
+  
+  .border-secondary {
+    border-color: #7C3AED;
   }
 }
