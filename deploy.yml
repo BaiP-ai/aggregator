@@ -56,6 +56,9 @@ jobs:
       - name: Fetch data
         run: node scripts/fetch-data.js
 
+      - name: Ensure logo fields exist
+        run: node scripts/ensure-logo-fields.js
+
       - name: Process data
         run: node scripts/process-data.js
 
