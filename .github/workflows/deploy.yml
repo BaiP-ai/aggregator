@@ -80,12 +80,39 @@ jobs:
       - name: Validate data
         run: node scripts/validate-data.js
 
-      - name: Install, build, and upload your site
-        uses: withastro/action@v3
+      - name: Build Astro site
+        run: npm run build
+        env:
+          BASE_URL: /aggregator
+          SITE: https://www.baip.ai
+
+      - name: Verify dist directory and logos
+        run: |
+          echo "📦 Checking dist directory..."
+          if [ -d "dist" ]; then
+            echo "✅ dist directory exists"
+            echo "📁 dist contents:"
+            ls -la dist/
+            if [ -d "dist/images/logos" ]; then
+              echo "✅ Logo directory copied to dist"
+              echo "📊 Logos in dist: $(find dist/images/logos/ -name '*.png' -o -name '*.svg' -o -name '*.jpg' | wc -l)"
+            else
+              echo "❌ Logo directory missing from dist"
+              echo "Available image directories in dist:"
+              find dist/ -name "images" -type d
+            fi
+          else
+            echo "❌ dist directory not found!"
+            ls -la
+          fi
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: . # The root location of your Astro project inside the repository
-          node-version: 18 # The specific version of Node that should be used to build your site
-          # package-manager: npm # The Node package manager that should be used to install dependencies and build your site
+          path: ./dist
 
   deploy:
     needs: build
