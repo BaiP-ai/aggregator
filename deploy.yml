@@ -1,4 +1,8 @@
-name: Deploy to GitHub Pages
+name: Deploy AI Aggregator to GitHub Pages
+# This workflow is specifically for the baip-ai/aggregator repository
+# It includes multiple safeguards to ensure it only runs on the correct repository:
+# 1. Job-level 'if' conditions checking github.repository
+# 2. Explicit repository verification step with error handling
 on:
   # Trigger the workflow every time you push to the `main` branch
   # Using a different branch name? Replace `main` with your branch's name
@@ -19,7 +23,18 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    # Only run on the baip-ai/aggregator repository
+    if: github.repository == 'baip-ai/aggregator'
     steps:
+      - name: Verify repository
+        run: |
+          echo "Running on repository: ${{ github.repository }}"
+          echo "Expected repository: baip-ai/aggregator"
+          if [ "${{ github.repository }}" != "baip-ai/aggregator" ]; then
+            echo "ERROR: This workflow should only run on baip-ai/aggregator"
+            exit 1
+          fi
+          
       - name: Checkout your repository using git
         uses: actions/checkout@v4
 
