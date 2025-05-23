@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/build-with-logos.js",
+    "build:astro-only": "astro build",
     "build-with-logos": "node scripts/build-with-logos.js",
     "preview": "astro preview",
     "astro": "astro",
