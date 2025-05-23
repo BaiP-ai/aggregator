@@ -8,6 +8,10 @@ on:
   # Trigger the workflow every time you push to the `main` branch
   push:
     branches: [ main ]
+    # Prevent infinite loop from deploy commits
+    paths-ignore:
+      - 'dist/**'
+      - '.github/**'
   # Run daily at midnight UTC to keep data fresh
   schedule:
     - cron: '0 0 * * *'
@@ -91,10 +95,11 @@ jobs:
 
       - name: Install, build, and upload your site
         uses: withastro/action@v3
-        # with:
-        #   path: . # The root location of your Astro project inside the repository
-        #   node-version: 18 # The specific version of Node that should be used to build your site
-        #   package-manager: npm # Don't use cache to avoid conflicts
+        with:
+          path: . 
+          node-version: 18
+          package-manager: npm
+          cache: false
 
   deploy:
     needs: build
