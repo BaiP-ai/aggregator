@@ -14,7 +14,9 @@
     "fetch-data": "node scripts/fetch-data.js",
     "validate-data": "node scripts/validate-data.js",
     "process-data": "node scripts/process-data.js",
-    "generate-site": "node scripts/build.js"
+    "generate-site": "node scripts/build.js",
+    "download-logos": "node scripts/download-logos.js",
+    "download-logos:force": "node scripts/download-logos.js --force"
   },
   "dependencies": {
     "@astrojs/solid-js": "^3.0.2",
