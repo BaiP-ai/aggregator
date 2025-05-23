@@ -42,7 +42,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          # Remove cache to avoid conflicts with withastro/action
       
       - name: Install dependencies
         run: npm ci
@@ -92,10 +91,10 @@ jobs:
 
       - name: Install, build, and upload your site
         uses: withastro/action@v3
-        with:
-          path: . # The root location of your Astro project inside the repository
-          node-version: 18 # The specific version of Node that should be used to build your site
-          package-manager: npm # Don't use cache to avoid conflicts
+        # with:
+        #   path: . # The root location of your Astro project inside the repository
+        #   node-version: 18 # The specific version of Node that should be used to build your site
+        #   package-manager: npm # Don't use cache to avoid conflicts
 
   deploy:
     needs: build
