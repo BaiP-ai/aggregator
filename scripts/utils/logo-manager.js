@@ -10,7 +10,7 @@ import https from 'https';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const logoDir = path.join(__dirname, '..', 'public', 'images', 'logos');
+const logoDir = path.join(__dirname, '..', '..', 'public', 'images', 'logos');
 
 /**
  * Normalize logo path to ensure consistency (no leading slash)
@@ -33,7 +33,7 @@ function normalizeLogoPath(logoPath) {
  * Extract company domain from URL or name
  */
 function extractDomain(url, name) {
-  if (url) {
+  if (url && !url.startsWith('/')) {
     try {
       const domain = new URL(url).hostname.replace('www.', '');
       return domain;
@@ -42,10 +42,24 @@ function extractDomain(url, name) {
     }
   }
   
+  // For agents or companies without valid URLs, try to extract domain from name
+  // For AI agents, we might want to use the underlying AI provider's domain
+  if (name.toLowerCase().includes('openai') || name.toLowerCase().includes('gpt')) {
+    return 'openai.com';
+  } else if (name.toLowerCase().includes('anthropic') || name.toLowerCase().includes('claude')) {
+    return 'anthropic.com';
+  } else if (name.toLowerCase().includes('azure') || name.toLowerCase().includes('microsoft')) {
+    return 'microsoft.com';
+  } else if (name.toLowerCase().includes('aws') || name.toLowerCase().includes('amazon')) {
+    return 'aws.amazon.com';
+  } else if (name.toLowerCase().includes('google')) {
+    return 'google.com';
+  }
+  
   // Fallback: try to guess domain from name
   const cleanName = name.toLowerCase()
     .replace(/[^a-z0-9]/g, '')
-    .replace(/inc|corp|ltd|llc|ai|tech|technologies/g, '');
+    .replace(/inc|corp|ltd|llc|ai|tech|technologies|agent|assistant/g, '');
   
   return `${cleanName}.com`;
 }
@@ -110,7 +124,7 @@ function downloadLogo(url, filePath) {
  * Attempt to download logo with multiple sources
  */
 async function downloadCompanyLogo(company) {
-  const { name, url, id } = company;
+  const { name, url, id, category } = company;
   const logoFilename = generateLogoFilename(name, id);
   const logoPath = path.join(logoDir, logoFilename);
   
@@ -121,6 +135,12 @@ async function downloadCompanyLogo(company) {
     return logoFilename;
   } catch (error) {
     // Logo doesn't exist, try to download it
+  }
+  
+  // For AI agents, use placeholder - they don't represent real companies
+  if (category === 'ai-agents' || name.toLowerCase().includes('agent')) {
+    console.log(`🤖 Using placeholder for AI agent: ${name}`);
+    return 'placeholder.svg';
   }
   
   const domain = extractDomain(url, name);
