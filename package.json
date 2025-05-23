@@ -18,7 +18,8 @@
     "download-logos": "node scripts/download-logos.js",
     "download-logos:force": "node scripts/download-logos.js --force",
     "sync-logos": "node scripts/sync-logos.js",
-    "fix-logo-paths": "node scripts/fix-logo-paths.js"
+    "fix-logo-paths": "node scripts/fix-logo-paths.js",
+    "ensure-logo-fields": "node scripts/ensure-logo-fields.js"
   },
   "dependencies": {
     "@astrojs/solid-js": "^3.0.2",
