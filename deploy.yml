@@ -62,6 +62,20 @@ jobs:
       - name: Process data
         run: node scripts/process-data.js
 
+      - name: Verify logo directory
+        run: |
+          echo "Checking logo directory contents..."
+          if [ -d "public/images/logos" ]; then
+            echo "✅ Logo directory exists"
+            echo "📁 Logo files found:"
+            ls -la public/images/logos/ | head -20
+            echo "📊 Total logo files: $(find public/images/logos/ -name '*.png' -o -name '*.svg' -o -name '*.jpg' | wc -l)"
+          else
+            echo "❌ Logo directory not found!"
+            echo "Available directories:"
+            find . -name "logos" -type d
+          fi
+
       - name: Validate data
         run: node scripts/validate-data.js
 
