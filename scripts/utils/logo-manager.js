@@ -13,6 +13,23 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const logoDir = path.join(__dirname, '..', 'public', 'images', 'logos');
 
 /**
+ * Normalize logo path to ensure consistency (no leading slash)
+ */
+function normalizeLogoPath(logoPath) {
+  if (!logoPath) return 'images/logos/placeholder.svg';
+  
+  // Remove leading slash if present
+  const cleanPath = logoPath.startsWith('/') ? logoPath.substring(1) : logoPath;
+  
+  // Ensure it starts with images/logos/
+  if (!cleanPath.startsWith('images/logos/')) {
+    return `images/logos/${cleanPath}`;
+  }
+  
+  return cleanPath;
+}
+
+/**
  * Extract company domain from URL or name
  */
 function extractDomain(url, name) {
@@ -201,20 +218,35 @@ async function processCompanyLogos(tools, agents) {
   await fs.mkdir(logoDir, { recursive: true });
   
   console.log('🖼️  Processing company logos...');
+  console.log(`📁 Logo directory: ${logoDir}`);
   
   // Combine all companies (tools and agents)
   const allCompanies = [...tools, ...agents];
   const processedLogos = [];
   
+  console.log(`🏢 Found ${allCompanies.length} companies to process`);
+  
   // Process each company
   for (const company of allCompanies) {
-    if (!company.name) continue;
+    if (!company.name) {
+      console.log(`⚠️  Skipping company with no name: ${JSON.stringify(company)}`);
+      continue;
+    }
     
     try {
+      // First normalize any existing logo path
+      if (company.logo) {
+        const originalPath = company.logo;
+        company.logo = normalizeLogoPath(company.logo);
+        if (originalPath !== company.logo) {
+          console.log(`🔧 Normalized path for ${company.name}: ${originalPath} → ${company.logo}`);
+        }
+      }
+      
       const logoFilename = await downloadCompanyLogo(company);
       
       // Update the company object with the correct logo path
-      company.logo = `images/logos/${logoFilename}`;
+      company.logo = normalizeLogoPath(`images/logos/${logoFilename}`);
       processedLogos.push({
         company: company.name,
         logo: logoFilename,
@@ -226,7 +258,7 @@ async function processCompanyLogos(tools, agents) {
       
     } catch (error) {
       console.error(`Error processing logo for ${company.name}:`, error);
-      company.logo = 'images/logos/placeholder.svg';
+      company.logo = normalizeLogoPath('images/logos/placeholder.svg');
     }
   }
   
@@ -247,5 +279,6 @@ export {
   cleanupUnusedLogos,
   generateLogoFilename,
   getCurrentLogos,
-  extractDomain
+  extractDomain,
+  normalizeLogoPath
 };

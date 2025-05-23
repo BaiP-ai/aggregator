@@ -12,6 +12,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadDataFromJsFile } from './utils/data-utils.js';
+import { normalizeLogoPath } from './utils/logo-manager.js';
 
 // Get the directory path
 const __filename = fileURLToPath(import.meta.url);
@@ -117,12 +118,14 @@ async function validateLogoFiles(data) {
   
   for (const company of allCompanies) {
     if (company.logo && company.logo !== 'images/logos/placeholder.svg') {
-      const logoFilePath = path.join(__dirname, '..', 'public', company.logo);
+      // Normalize the path before checking
+      const normalizedPath = normalizeLogoPath(company.logo);
+      const logoFilePath = path.join(__dirname, '..', 'public', normalizedPath);
       
       try {
         await fs.access(logoFilePath);
       } catch (error) {
-        errors.push(`Missing logo file for ${company.name}: ${company.logo}`);
+        errors.push(`Missing logo file for ${company.name}: ${normalizedPath} (original: ${company.logo})`);
       }
     }
   }
