@@ -1,12 +1,8 @@
 name: Deploy AI Aggregator to GitHub Pages
 # This workflow is specifically for the BaiP-ai/aggregator repository
-# It includes multiple safeguards to ensure it only runs on the correct repository:
-# 1. Job-level 'if' conditions checking github.repository
-# 2. Explicit repository verification step with error handling
 
 on:
   # Trigger the workflow every time you push to the `main` branch
-  # Using a different branch name? Replace `main` with your branch's name
   push:
     branches: [ main ]
   # Run daily at midnight UTC to keep data fresh
@@ -35,110 +31,19 @@ jobs:
             echo "ERROR: This workflow should only run on BaiP-ai/aggregator"
             exit 1
           fi
-          
-      - name: Checkout your repository using git
-        uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      # Set up environment for custom data preparation
-      - name: Create .env file
-        run: |
-          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
 
-      # Run the data preparation scripts
-      - name: Fetch data
-        run: node scripts/fetch-data.js
-
-      - name: Ensure logo fields exist
-        run: node scripts/ensure-logo-fields.js
-
-      - name: Process data
-        run: node scripts/process-data.js
-
-      - name: Verify logo directory
-        run: |
-          echo "Checking logo directory contents..."
-          if [ -d "public/images/logos" ]; then
-            echo "✅ Logo directory exists"
-            echo "📁 Logo files found:"
-            ls -la public/images/logos/ | head -20
-            echo "📊 Total logo files: $(find public/images/logos/ -name '*.png' -o -name '*.svg' -o -name '*.jpg' | wc -l)"
-          else
-            echo "❌ Logo directory not found!"
-            echo "Available directories:"
-            find . -name "logos" -type d
-          fi
-          
-          echo "📂 Full public directory structure:"
-          find public/ -type f | head -20
-
-      - name: Validate data
-        run: node scripts/validate-data.js
-
-      - name: Build Astro site with logos
-        run: npm run build-with-logos
+      # Use Astro action with our enhanced build script that includes data processing
+      - name: Build and upload site with complete data processing
+        uses: withastro/action@v3
         env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           BASE_URL: /aggregator
           SITE: https://www.baip.ai
-
-      - name: Ensure logos are copied to dist
-        run: |
-          echo "🔧 Ensuring logos are properly copied to dist..."
-          
-          # Check if public/images/logos exists and has content
-          if [ -d "public/images/logos" ] && [ "$(ls -A public/images/logos)" ]; then
-            echo "✅ Source logos found in public/images/logos"
-            echo "📊 Source logos: $(find public/images/logos/ -name '*.png' -o -name '*.svg' -o -name '*.jpg' | wc -l)"
-            
-            # Ensure dist/images/logos directory exists
-            mkdir -p dist/images/logos
-            
-            # Copy all logos from public to dist (in case Astro didn't copy them)
-            cp -r public/images/logos/* dist/images/logos/ 2>/dev/null || echo "⚠️  No files to copy or already copied"
-            
-            echo "✅ Manual copy completed"
-            echo "📊 Dist logos after copy: $(find dist/images/logos/ -name '*.png' -o -name '*.svg' -o -name '*.jpg' | wc -l)"
-          else
-            echo "❌ No source logos found in public/images/logos"
-          fi
-
-      - name: Verify dist directory and logos
-        run: |
-          echo "📦 Checking dist directory..."
-          if [ -d "dist" ]; then
-            echo "✅ dist directory exists"
-            echo "📁 dist contents:"
-            ls -la dist/
-            if [ -d "dist/images/logos" ]; then
-              echo "✅ Logo directory exists in dist"
-              echo "📊 Logos in dist: $(find dist/images/logos/ -name '*.png' -o -name '*.svg' -o -name '*.jpg' | wc -l)"
-              echo "📁 Logo files:"
-              ls -la dist/images/logos/ | head -10
-            else
-              echo "❌ Logo directory missing from dist"
-              echo "Available image directories in dist:"
-              find dist/ -name "images" -type d
-            fi
-          else
-            echo "❌ dist directory not found!"
-            ls -la
-          fi
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-        
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: . # The root location of your Astro project inside the repository
+          node-version: 18 # The specific version of Node that should be used to build your site
+          package-manager: npm # The Node package manager that should be used to install dependencies
+          # The build-with-logos script will handle: fetch-data → ensure-logo-fields → process-data → validate-data → astro build
 
   deploy:
     needs: build
