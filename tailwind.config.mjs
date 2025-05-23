@@ -7,8 +7,8 @@ export default {
         primary: '#2563EB', // Matching the primary color from the main website
         secondary: '#7C3AED', // Purple accent color
         accent: '#8b5cf6',
-        dark: '#111827',
-        light: '#f3f4f6'
+        dark: '#050816',    // Very Dark Blue/Black to match website
+        light: '#F8FAFC'    // Light Text (White) to match website
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
