@@ -1,5 +1,5 @@
 name: Deploy AI Aggregator to GitHub Pages
-# This workflow is specifically for the baip-ai/aggregator repository
+# This workflow is specifically for the BaiP-ai/aggregator repository
 # It includes multiple safeguards to ensure it only runs on the correct repository:
 # 1. Job-level 'if' conditions checking github.repository
 # 2. Explicit repository verification step with error handling
@@ -24,15 +24,15 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Only run on the baip-ai/aggregator repository
-    if: github.repository == 'baip-ai/aggregator'
+    # Only run on the BaiP-ai/aggregator repository
+    if: github.repository == 'BaiP-ai/aggregator'
     steps:
       - name: Verify repository
         run: |
           echo "Running on repository: ${{ github.repository }}"
-          echo "Expected repository: baip-ai/aggregator"
-          if [ "${{ github.repository }}" != "baip-ai/aggregator" ]; then
-            echo "ERROR: This workflow should only run on baip-ai/aggregator"
+          echo "Expected repository: BaiP-ai/aggregator"
+          if [ "${{ github.repository }}" != "BaiP-ai/aggregator" ]; then
+            echo "ERROR: This workflow should only run on BaiP-ai/aggregator"
             exit 1
           fi
           
@@ -73,8 +73,8 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    # Only run on the baip-ai/aggregator repository
-    if: github.repository == 'baip-ai/aggregator'
+    # Only run on the BaiP-ai/aggregator repository
+    if: github.repository == 'BaiP-ai/aggregator'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
