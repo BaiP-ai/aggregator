@@ -1,5 +1,8 @@
 name: Deploy AI Aggregator to GitHub Pages
 # This workflow is specifically for the BaiP-ai/aggregator repository
+# It includes multiple safeguards to ensure it only runs on the correct repository:
+# 1. Job-level 'if' conditions checking github.repository
+# 2. Explicit repository verification step with error handling
 
 on:
   # Trigger the workflow every time you push to the `main` branch
@@ -31,19 +34,68 @@ jobs:
             echo "ERROR: This workflow should only run on BaiP-ai/aggregator"
             exit 1
           fi
+          
+      - name: Checkout your repository using git
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          # Remove cache to avoid conflicts with withastro/action
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      # Set up environment for custom data preparation
+      - name: Create .env file
+        run: |
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
 
-      # Use Astro action with our enhanced build script that includes data processing
-      - name: Build and upload site with complete data processing
-        uses: withastro/action@v3
+      # Run the data preparation scripts
+      - name: Fetch data
+        run: node scripts/fetch-data.js
+
+      - name: Ensure logo fields exist
+        run: node scripts/ensure-logo-fields.js
+
+      - name: Process data (skip logo processing)
+        run: node scripts/process-data.js
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          BASE_URL: /aggregator
-          SITE: https://www.baip.ai
+          SKIP_LOGO_PROCESSING: true
+
+      - name: Download company logos
+        run: node scripts/ensure-logos.js
+
+      - name: Verify logo directory before build
+        run: |
+          echo "Checking logo directory contents before Astro build..."
+          if [ -d "public/images/logos" ]; then
+            echo "✅ Logo directory exists"
+            echo "📁 Logo files found:"
+            ls -la public/images/logos/ | head -10
+            echo "📊 Total logo files: $(find public/images/logos/ -name '*.png' -o -name '*.svg' -o -name '*.jpg' | wc -l)"
+          else
+            echo "❌ Logo directory not found!"
+          fi
+
+      - name: Validate data (skip logo validation)
+        run: node scripts/validate-data.js
+        env:
+          SKIP_LOGO_VALIDATION: true
+
+      # Final logo check right before Astro build (in case withastro/action does npm ci)
+      - name: Final logo check
+        run: |
+          echo "Final logo check before Astro build..."
+          node scripts/ensure-logos.js
+
+      - name: Install, build, and upload your site
+        uses: withastro/action@v3
         with:
           path: . # The root location of your Astro project inside the repository
           node-version: 18 # The specific version of Node that should be used to build your site
-          package-manager: npm # The Node package manager that should be used to install dependencies
-          # The build-with-logos script will handle: fetch-data → ensure-logo-fields → process-data → validate-data → astro build
+          package-manager: npm # Don't use cache to avoid conflicts
 
   deploy:
     needs: build

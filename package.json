@@ -22,6 +22,7 @@
     "sync-logos": "node scripts/sync-logos.js",
     "fix-logo-paths": "node scripts/fix-logo-paths.js",
     "ensure-logo-fields": "node scripts/ensure-logo-fields.js",
+    "ensure-logos": "node scripts/ensure-logos.js",
     "audit-logos": "node scripts/audit-logos.js"
   },
   "dependencies": {

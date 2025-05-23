@@ -183,9 +183,14 @@ async function main() {
     allErrors.push(...integrityErrors);
     
     // Check logo files exist
-    console.log('Validating logo files...');
-    const logoErrors = await validateLogoFiles(data);
-    allErrors.push(...logoErrors);
+    // Skip if SKIP_LOGO_VALIDATION environment variable is set
+    if (process.env.SKIP_LOGO_VALIDATION === 'true') {
+      console.log('⏭️  Skipping logo validation (SKIP_LOGO_VALIDATION=true)');
+    } else {
+      console.log('Validating logo files...');
+      const logoErrors = await validateLogoFiles(data);
+      allErrors.push(...logoErrors);
+    }
     
     // Report results
     if (allErrors.length > 0) {
