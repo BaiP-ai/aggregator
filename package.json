@@ -9,6 +9,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
+    "build-with-logos": "node scripts/build-with-logos.js",
     "preview": "astro preview",
     "astro": "astro",
     "fetch-data": "node scripts/fetch-data.js",
