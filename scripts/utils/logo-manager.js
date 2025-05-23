@@ -130,11 +130,13 @@ async function downloadCompanyLogo(company) {
   
   // Check if logo already exists
   try {
-    await fs.access(logoPath);
-    console.log(`✓ Logo already exists for ${name}: ${logoFilename}`);
-    return logoFilename;
+    const stats = await fs.stat(logoPath);
+    if (stats.size > 0) {
+      console.log(`✓ Logo already exists for ${name}: ${logoFilename}`);
+      return logoFilename;
+    }
   } catch (error) {
-    // Logo doesn't exist, try to download it
+    // Logo doesn't exist, continue to download
   }
   
   // For AI agents, use placeholder - they don't represent real companies
@@ -263,6 +265,27 @@ async function processCompanyLogos(tools, agents) {
         }
       }
       
+      // Check if company already has a valid logo that exists
+      if (company.logo && company.logo !== 'images/logos/placeholder.svg') {
+        const existingLogoPath = path.join(logoDir, path.basename(company.logo));
+        try {
+          const stats = await fs.stat(existingLogoPath);
+          if (stats.size > 0) {
+            console.log(`✓ ${company.name} already has a valid logo: ${company.logo}`);
+            processedLogos.push({
+              company: company.name,
+              logo: path.basename(company.logo),
+              id: company.id,
+              status: 'existing'
+            });
+            continue; // Skip downloading for this company
+          }
+        } catch (error) {
+          // Logo file doesn't exist, continue to download
+          console.log(`🔍 Logo file missing for ${company.name}, will attempt download`);
+        }
+      }
+      
       const logoFilename = await downloadCompanyLogo(company);
       
       // Update the company object with the correct logo path
@@ -270,7 +293,8 @@ async function processCompanyLogos(tools, agents) {
       processedLogos.push({
         company: company.name,
         logo: logoFilename,
-        id: company.id
+        id: company.id,
+        status: logoFilename === 'placeholder.svg' ? 'placeholder' : 'downloaded'
       });
       
       // Add small delay to be respectful to logo services
@@ -285,8 +309,16 @@ async function processCompanyLogos(tools, agents) {
   // Clean up unused logos
   const cleanupResult = await cleanupUnusedLogos(allCompanies);
   
+  // Categorize results
+  const existing = processedLogos.filter(p => p.status === 'existing').length;
+  const downloaded = processedLogos.filter(p => p.status === 'downloaded').length;
+  const placeholders = processedLogos.filter(p => p.status === 'placeholder').length;
+  
   console.log(`📊 Logo processing summary:`);
-  console.log(`   • Processed: ${processedLogos.length} companies`);
+  console.log(`   • Total companies: ${processedLogos.length}`);
+  console.log(`   • Existing logos: ${existing}`);
+  console.log(`   • Downloaded logos: ${downloaded}`);
+  console.log(`   • Placeholders: ${placeholders}`);
   console.log(`   • Logos kept: ${cleanupResult.kept}`);
   console.log(`   • Logos removed: ${cleanupResult.removed}`);
   
