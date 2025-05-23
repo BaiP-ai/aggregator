@@ -91,6 +91,36 @@ To add a new logo:
    ```
 3. Run the download script: `npm run download-logos`
 
+## Automatic Logo Management
+
+The data processing pipeline now includes automatic logo management:
+
+- **New companies**: Logos are automatically downloaded when new tools/agents are added
+- **Removed companies**: Unused logos are automatically cleaned up
+- **Logo sources**: Uses multiple services (Clearbit, Logo.dev, UpLead) with fallbacks
+- **Validation**: Logo file existence is checked during data validation
+
+### Logo Sync Commands
+
+```bash
+# Sync logos based on current data (part of process-data)
+npm run process-data
+
+# Sync logos independently
+npm run sync-logos
+
+# Manual logo download (for predefined list)
+npm run download-logos
+npm run download-logos:force
+```
+
+### Logo Processing Pipeline
+
+1. **Fetch Data** (`fetch-data.js`) - Gets latest company data
+2. **Validate Data** (`validate-data.js`) - Checks data integrity + logo files
+3. **Process Data** (`process-data.js`) - Downloads new logos, cleans up unused ones
+4. **Build Site** - Uses processed data with correct logo paths
+
 ## Notes
 
 - Script includes a 500ms delay between downloads to be respectful to servers
