@@ -25,6 +25,9 @@ jobs:
         with:
           node-version: 18
       
+      - name: Install dependencies
+        run: npm ci
+
       - name: Create .env file
         run: |
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
@@ -34,9 +37,6 @@ jobs:
           node scripts/fetch-data.js
           node scripts/process-data.js
           node scripts/ensure-logos.js
-
-      - name: Install dependencies
-        run: npm ci
       
       - name: Build and upload site
         uses: withastro/action@v3
