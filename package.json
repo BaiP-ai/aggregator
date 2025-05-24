@@ -1,45 +1,18 @@
-{
-  "name": "baip-ai-aggregator",
-  "type": "module",
-  "version": "0.1.0",
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "build:astro-only": "astro build",
-    "build-with-logos": "node scripts/build-with-logos.js",
-    "preview": "astro preview",
-    "astro": "astro",
-    "fetch-data": "node scripts/fetch-data.js",
-    "validate-data": "node scripts/validate-data.js",
-    "process-data": "node scripts/process-data.js",
-    "generate-site": "node scripts/build.js",
-    "download-logos": "node scripts/download-logos.js",
-    "download-logos:force": "node scripts/download-logos.js --force",
-    "sync-logos": "node scripts/sync-logos.js",
-    "fix-logo-paths": "node scripts/fix-logo-paths.js",
-    "ensure-logo-fields": "node scripts/ensure-logo-fields.js",
-    "ensure-logos": "node scripts/ensure-logos.js",
-    "audit-logos": "node scripts/audit-logos.js"
-  },
-  "dependencies": {
-    "@astrojs/solid-js": "^3.0.2",
-    "@astrojs/tailwind": "^5.0.3",
-    "@motionone/solid": "^10.16.4",
-    "astro": "^3.5.5",
-    "solid-js": "^1.8.5",
-    "tailwindcss": "^3.3.5",
-    "three": "^0.158.0",
-    "axios": "^1.6.2",
-    "node-fetch": "^3.3.2",
-    "dotenv": "^16.3.1",
-    "openai": "^4.20.1"
-  },
-  "devDependencies": {
-    "@types/three": "^0.156.0",
-    "typescript": "^5.2.2"
-  }
+"scripts": {
+  "dev": "astro dev",
+  "start": "astro dev",
+  "build": "npm run fetch-data && npm run process-data && astro build",
+  "build:astro-only": "astro build",
+  "preview": "astro preview",
+  "astro": "astro",
+  "fetch-data": "node scripts/fetch-data.js",
+  "process-data": "node scripts/process-data.js",
+  "validate-data": "node scripts/validate-data.js",
+  "download-logos": "node scripts/download-logos.js",
+  "download-logos:force": "node scripts/download-logos.js --force",
+  "sync-logos": "node scripts/sync-logos.js",
+  "fix-logo-paths": "node scripts/fix-logo-paths.js",
+  "ensure-logo-fields": "node scripts/ensure-logo-fields.js",
+  "ensure-logos": "node scripts/ensure-logos.js",
+  "audit-logos": "node scripts/audit-logos.js"
 }
