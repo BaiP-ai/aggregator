@@ -2,6 +2,10 @@
 dist/
 .output/
 
+# cache directories
+cache/
+node_modules/.astro/
+
 # dependencies
 node_modules/
 

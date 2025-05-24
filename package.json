@@ -23,7 +23,9 @@
     "fix-logo-paths": "node scripts/fix-logo-paths.js",
     "ensure-logo-fields": "node scripts/ensure-logo-fields.js",
     "ensure-logos": "node scripts/ensure-logos.js",
-    "audit-logos": "node scripts/audit-logos.js"
+    "audit-logos": "node scripts/audit-logos.js",
+    "test-image-deployment": "node scripts/test-image-deployment.js",
+    "test-deployment": "node scripts/test-deployment.js"
   },
   "dependencies": {
     "@astrojs/solid-js": "^3.0.2",

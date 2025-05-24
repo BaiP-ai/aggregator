@@ -13,20 +13,22 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const logoDir = path.join(__dirname, '..', '..', 'public', 'images', 'logos');
 
 /**
- * Normalize logo path to ensure consistency (no leading slash)
+ * Normalize logo path to ensure consistency and handle base URL
  */
 function normalizeLogoPath(logoPath) {
-  if (!logoPath) return 'images/logos/placeholder.svg';
+  if (!logoPath) return '/images/logos/placeholder.svg';
   
   // Remove leading slash if present
-  const cleanPath = logoPath.startsWith('/') ? logoPath.substring(1) : logoPath;
+  let cleanPath = logoPath.startsWith('/') ? logoPath.substring(1) : logoPath;
   
   // Ensure it starts with images/logos/
   if (!cleanPath.startsWith('images/logos/')) {
-    return `images/logos/${cleanPath}`;
+    cleanPath = `images/logos/${cleanPath}`;
   }
   
-  return cleanPath;
+  // For deployment with base URL, always return with leading slash
+  // Astro will handle the base URL prefix automatically
+  return `/${cleanPath}`;
 }
 
 /**
