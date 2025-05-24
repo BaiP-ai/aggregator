@@ -52,6 +52,27 @@ jobs:
         run: |
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
 
+      # Cache the logos directory to prevent re-downloading on every deployment
+      - name: Cache logos
+        uses: actions/cache@v4
+        with:
+          path: public/images/logos
+          key: logos-cache-${{ hashFiles('src/data/tools.js', 'src/data/agents.js') }}
+          restore-keys: |
+            logos-cache-
+
+      # Cache Astro build artifacts for faster builds
+      - name: Cache Astro build
+        uses: actions/cache@v4
+        with:
+          path: |
+            cache
+            node_modules/.astro
+          key: astro-cache-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            astro-cache-${{ hashFiles('package-lock.json') }}-
+            astro-cache-
+
       # Run the data preparation scripts
       - name: Fetch data
         run: node scripts/fetch-data.js
@@ -59,7 +80,7 @@ jobs:
       - name: Ensure logo fields exist
         run: node scripts/ensure-logo-fields.js
 
-      - name: Process data
+      - name: Process data and download logos
         run: node scripts/process-data.js
 
       - name: Verify logo directory
@@ -72,16 +93,16 @@ jobs:
             echo "📊 Total logo files: $(find public/images/logos/ -name '*.png' -o -name '*.svg' -o -name '*.jpg' | wc -l)"
           else
             echo "❌ Logo directory not found!"
-            echo "Available directories:"
-            find . -name "logos" -type d
+            mkdir -p public/images/logos
+            echo "Created empty logo directory"
           fi
 
       - name: Validate data
         run: node scripts/validate-data.js
 
-      # Build the site using custom build script that ensures logos are copied
-      - name: Build site with logos
-        run: npm run build-with-logos
+      # Build the site - Astro will automatically copy public/ to dist/
+      - name: Build Astro site
+        run: npm run build
         env:
           # Pass environment variables to the build
           BASE_URL: /aggregator
@@ -89,38 +110,28 @@ jobs:
           DISABLE_API_CALLS: true
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       
-      # Ensure logos are copied to dist directory
-      - name: Ensure logos are copied to dist
+      # Verify the build output (Astro should have copied logos automatically)
+      - name: Verify deployment structure
         run: |
-          echo "🔧 Ensuring logos are properly copied to dist..."
+          echo "🔍 Verifying final deployment structure..."
           
-          # Check if public/images/logos exists and has content
-          if [ -d "public/images/logos" ] && [ "$(ls -A public/images/logos)" ]; then
-            echo "✅ Source logos found in public/images/logos"
-            echo "📊 Source logos: $(find public/images/logos/ -name '*.png' -o -name '*.svg' -o -name '*.jpg' | wc -l)"
+          if [ -d "dist" ]; then
+            echo "✅ dist directory exists"
+            echo "📊 Total files in dist: $(find dist -type f | wc -l)"
             
-            # Ensure dist/images/logos directory exists
-            mkdir -p dist/images/logos
-            
-            # Copy all logos from public to dist (in case Astro didn't copy them)
-            cp -r public/images/logos/* dist/images/logos/ 2>/dev/null || echo "⚠️  No files to copy or already copied"
-            
-            echo "✅ Manual copy completed"
-            echo "📊 Dist logos after copy: $(find dist/images/logos/ -name '*.png' -o -name '*.svg' -o -name '*.jpg' | wc -l)"
+            if [ -d "dist/images/logos" ]; then
+              echo "✅ Logos directory exists in dist"
+              echo "📊 Logo files in dist: $(find dist/images/logos/ -name '*.png' -o -name '*.svg' -o -name '*.jpg' | wc -l)"
+            else
+              echo "❌ No logos directory in dist - this indicates a build problem"
+              echo "Available directories in dist:"
+              find dist -type d | head -10
+            fi
           else
-            echo "❌ No source logos found in public/images/logos"
-          fi
-      
-      # Verify dist directory exists
-      - name: Verify dist directory
-        run: |
-          if [ ! -d "dist" ]; then
-            echo "::error::dist directory not found!"
+            echo "❌ dist directory not found!"
             ls -la
             exit 1
           fi
-          echo "dist directory found - contents:"
-          ls -la dist/
 
       # Deploy to the BaiP-ai/aggregator repository
       - name: Deploy to GitHub Pages in BaiP-ai/aggregator repository

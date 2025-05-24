@@ -2,7 +2,8 @@
 
 /**
  * Build with Logos Script
- * Combines Astro build with logo management to ensure logos are included
+ * Processes data and downloads logos, then runs standard Astro build
+ * Astro automatically copies public/ folder to dist/ during build
  */
 
 import { execSync } from 'child_process';
@@ -24,72 +25,63 @@ async function buildWithLogos() {
     execSync('node scripts/process-data.js', { cwd: projectRoot, stdio: 'inherit' });
     execSync('node scripts/validate-data.js', { cwd: projectRoot, stdio: 'inherit' });
     
-    // Step 2: Run Astro build
+    // Step 2: Verify logos are in public directory before build
+    const publicLogosDir = path.join(projectRoot, 'public', 'images', 'logos');
+    
+    try {
+      const publicLogos = await fs.readdir(publicLogosDir);
+      console.log(`✅ Found ${publicLogos.length} logos in public/images/logos/`);
+      console.log(`📁 Sample logos: ${publicLogos.slice(0, 5).join(', ')}`);
+    } catch (error) {
+      console.warn('⚠️  No logos found in public/images/logos/ - ensuring directory exists');
+      await fs.mkdir(publicLogosDir, { recursive: true });
+      
+      // Ensure placeholder exists
+      const placeholderSrc = path.join(projectRoot, 'src', 'assets', 'placeholder.svg');
+      const placeholderDest = path.join(publicLogosDir, 'placeholder.svg');
+      
+      try {
+        await fs.copyFile(placeholderSrc, placeholderDest);
+        console.log('✅ Placeholder logo copied to public/images/logos/');
+      } catch (placeholderError) {
+        console.warn('⚠️  Could not copy placeholder logo - creating basic SVG');
+        const basicSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="#e5e7eb"/><text x="50" y="50" text-anchor="middle" dy=".35em" font-family="Arial" font-size="12" fill="#6b7280">Logo</text></svg>';
+        await fs.writeFile(placeholderDest, basicSvg);
+      }
+    }
+    
+    // Step 3: Run standard Astro build (it will automatically copy public/ to dist/)
     console.log('📦 Building Astro site...');
     execSync('npm run build', { 
       cwd: projectRoot, 
       stdio: 'inherit',
       env: {
         ...process.env,
-        BASE_URL: '/aggregator',
-        SITE: 'https://www.baip.ai'
+        BASE_URL: '/aggregator/',
+        SITE: 'https://www.baip.ai',
+        NODE_ENV: 'production'
       }
     });
     
-    // Step 2: Verify public logos exist
-    const publicLogosDir = path.join(projectRoot, 'public', 'images', 'logos');
+    // Step 4: Verify the build output
     const distLogosDir = path.join(projectRoot, 'dist', 'images', 'logos');
     
     try {
-      const publicLogos = await fs.readdir(publicLogosDir);
-      console.log(`✅ Found ${publicLogos.length} logos in public/images/logos/`);
+      const distLogos = await fs.readdir(distLogosDir);
+      console.log(`✅ Build completed successfully with ${distLogos.length} logos in dist/`);
+    } catch (error) {
+      console.error('❌ Logos not found in dist/ - this indicates Astro did not copy public/ folder properly');
+      console.error('Error:', error.message);
       
-      // Step 3: Ensure dist directory structure exists
-      await fs.mkdir(path.dirname(distLogosDir), { recursive: true });
-      
-      // Step 4: Check if Astro copied the logos
-      let distLogos = [];
+      // List what's actually in dist
       try {
-        distLogos = await fs.readdir(distLogosDir);
-        console.log(`📁 Found ${distLogos.length} logos in dist/images/logos/`);
-      } catch (error) {
-        console.log('📁 dist/images/logos/ directory does not exist, creating...');
-        await fs.mkdir(distLogosDir, { recursive: true });
+        const distContents = await fs.readdir(path.join(projectRoot, 'dist'));
+        console.log('📁 Contents of dist/:', distContents);
+      } catch (listError) {
+        console.error('Could not list dist contents:', listError.message);
       }
       
-      // Step 5: Copy logos if missing or incomplete
-      if (distLogos.length < publicLogos.length) {
-        console.log('🔧 Copying logos from public to dist...');
-        
-        for (const logo of publicLogos) {
-          const sourcePath = path.join(publicLogosDir, logo);
-          const destPath = path.join(distLogosDir, logo);
-          
-          try {
-            await fs.copyFile(sourcePath, destPath);
-            console.log(`  ✅ Copied ${logo}`);
-          } catch (error) {
-            console.error(`  ❌ Failed to copy ${logo}:`, error.message);
-          }
-        }
-        
-        // Verify final count
-        const finalDistLogos = await fs.readdir(distLogosDir);
-        console.log(`✅ Final logo count in dist: ${finalDistLogos.length}`);
-      } else {
-        console.log('✅ All logos already present in dist directory');
-      }
-      
-    } catch (error) {
-      console.warn('⚠️  No logos found in public/images/logos/, skipping logo copy');
-    }
-    
-    // Step 6: Final verification
-    try {
-      const finalDistLogos = await fs.readdir(distLogosDir);
-      console.log(`🎉 Build completed successfully with ${finalDistLogos.length} logos`);
-    } catch (error) {
-      console.warn('⚠️  Could not verify final logo count');
+      process.exit(1);
     }
     
   } catch (error) {

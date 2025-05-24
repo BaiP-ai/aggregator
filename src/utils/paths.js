@@ -25,13 +25,16 @@ export function getSitePath(path) {
 
 /**
  * Get an asset path with proper base URL prefix
- * This function helps handle both development mode (where /aggregator is included)
- * and paths specified in the code (which should not include /aggregator)
+ * This function helps handle both development mode and production deployment
  * @param {string} path - The asset path to prefix
  * @returns {string} - The asset path with proper base URL prefix
  */
 export function getAssetPath(path) {
-  // For development we use the path as-is since Astro dev server already adds the base path
-  // For production build, Astro will handle the base path correctly based on config
-  return path;
+  if (!path) return getSitePath('/images/logos/placeholder.svg');
+  
+  // Ensure the path starts with a slash for consistency
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  
+  // Use BASE_URL from environment (set by Astro config)
+  return getSitePath(cleanPath);
 }
