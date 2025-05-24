@@ -1,24 +1,12 @@
 name: Deploy AI Aggregator to GitHub Pages
-# This workflow is specifically for the BaiP-ai/aggregator repository
-# It includes multiple safeguards to ensure it only runs on the correct repository:
-# 1. Job-level 'if' conditions checking github.repository
-# 2. Explicit repository verification step with error handling
 
 on:
-  # Trigger the workflow every time you push to the `main` branch
   push:
     branches: [ main ]
-    # Prevent infinite loop from deploy commits
-    paths-ignore:
-      - 'dist/**'
-      - '.github/**'
-  # Run daily at midnight UTC to keep data fresh
   schedule:
     - cron: '0 0 * * *'
-  # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
 
-# Allow this job to clone the repo and create a page deployment
 permissions:
   contents: read
   pages: write
@@ -27,19 +15,9 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Only run on the BaiP-ai/aggregator repository
     if: github.repository == 'BaiP-ai/aggregator'
     steps:
-      - name: Verify repository
-        run: |
-          echo "Running on repository: ${{ github.repository }}"
-          echo "Expected repository: BaiP-ai/aggregator"
-          if [ "${{ github.repository }}" != "BaiP-ai/aggregator" ]; then
-            echo "ERROR: This workflow should only run on BaiP-ai/aggregator"
-            exit 1
-          fi
-          
-      - name: Checkout your repository using git
+      - name: Checkout repository
         uses: actions/checkout@v4
         
       - name: Setup Node.js
@@ -47,64 +25,29 @@ jobs:
         with:
           node-version: 18
       
-      - name: Install dependencies
-        run: npm ci
-      
-      # Set up environment for custom data preparation
       - name: Create .env file
         run: |
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
 
-      # Run the data preparation scripts
-      - name: Fetch data
-        run: node scripts/fetch-data.js
-
-      - name: Ensure logo fields exist
-        run: node scripts/ensure-logo-fields.js
-
-      - name: Process data (skip logo processing)
-        run: node scripts/process-data.js
-        env:
-          SKIP_LOGO_PROCESSING: true
-
-      - name: Download company logos
-        run: node scripts/ensure-logos.js
-
-      - name: Verify logo directory before build
+      - name: Fetch and process data
         run: |
-          echo "Checking logo directory contents before Astro build..."
-          if [ -d "public/images/logos" ]; then
-            echo "✅ Logo directory exists"
-            echo "📁 Logo files found:"
-            ls -la public/images/logos/ | head -10
-            echo "📊 Total logo files: $(find public/images/logos/ -name '*.png' -o -name '*.svg' -o -name '*.jpg' | wc -l)"
-          else
-            echo "❌ Logo directory not found!"
-          fi
-
-      - name: Validate data (skip logo validation)
-        run: node scripts/validate-data.js
-        env:
-          SKIP_LOGO_VALIDATION: true
-
-      # Final logo check right before Astro build (in case withastro/action does npm ci)
-      - name: Final logo check
-        run: |
-          echo "Final logo check before Astro build..."
+          node scripts/fetch-data.js
+          node scripts/process-data.js
           node scripts/ensure-logos.js
 
-      - name: Install, build, and upload your site
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build and upload site
         uses: withastro/action@v3
         with:
           path: . 
           node-version: 18
           package-manager: npm
-          cache: false
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    # Only run on the BaiP-ai/aggregator repository
     if: github.repository == 'BaiP-ai/aggregator'
     environment:
       name: github-pages
