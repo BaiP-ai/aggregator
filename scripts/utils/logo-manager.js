@@ -78,13 +78,30 @@ function generateLogoFilename(name, id) {
 }
 
 /**
- * Download a logo from URL
+ * Download a logo from URL with timeout
  */
-function downloadLogo(url, filePath) {
+function downloadLogo(url, filePath, timeoutMs = 10000) {
   return new Promise((resolve, reject) => {
     const file = createWriteStream(filePath);
+    let timeout;
     
-    https.get(url, (response) => {
+    const cleanup = () => {
+      try {
+        file.close();
+        fs.unlink(filePath).catch(() => {});
+      } catch (error) {
+        // Ignore cleanup errors
+      }
+    };
+    
+    timeout = setTimeout(() => {
+      cleanup();
+      reject(new Error('Download timeout'));
+    }, timeoutMs);
+    
+    const request = https.get(url, (response) => {
+      clearTimeout(timeout);
+      
       if (response.statusCode === 200) {
         response.pipe(file);
         file.on('finish', async () => {
@@ -102,20 +119,28 @@ function downloadLogo(url, filePath) {
             reject(error);
           }
         });
-        file.on('error', async (error) => {
-          file.close();
-          await fs.unlink(filePath).catch(() => {});
+        file.on('error', (error) => {
+          cleanup();
           reject(error);
         });
       } else {
-        file.close();
-        fs.unlink(filePath).catch(() => {});
+        cleanup();
         reject(new Error(`HTTP ${response.statusCode}: ${response.statusMessage}`));
       }
-    }).on('error', async (error) => {
-      file.close();
-      await fs.unlink(filePath).catch(() => {});
+    });
+    
+    request.on('error', (error) => {
+      clearTimeout(timeout);
+      cleanup();
       reject(error);
+    });
+    
+    // Set request timeout
+    request.setTimeout(timeoutMs, () => {
+      clearTimeout(timeout);
+      request.destroy();
+      cleanup();
+      reject(new Error('Request timeout'));
     });
   });
 }
@@ -242,14 +267,25 @@ async function processCompanyLogos(tools, agents) {
   console.log('🖼️  Processing company logos...');
   console.log(`📁 Logo directory: ${logoDir}`);
   
-  // Combine all companies (tools and agents)
-  const allCompanies = [...tools, ...agents];
+  // Combine all companies (tools and agents) and limit to prevent infinite processing
+  const allCompanies = [...tools, ...agents].slice(0, 100); // Limit to 100 companies max
   const processedLogos = [];
   
-  console.log(`🏢 Found ${allCompanies.length} companies to process`);
+  console.log(`🏢 Found ${allCompanies.length} companies to process (limited to 100)`);
   
-  // Process each company
-  for (const company of allCompanies) {
+  // Process each company with timeout protection
+  const startTime = Date.now();
+  const maxProcessingTime = 5 * 60 * 1000; // 5 minutes max
+  
+  for (let i = 0; i < allCompanies.length; i++) {
+    const company = allCompanies[i];
+    
+    // Check if we've exceeded max processing time
+    if (Date.now() - startTime > maxProcessingTime) {
+      console.log(`⚠️  Reached maximum processing time (5 minutes), stopping at company ${i + 1}/${allCompanies.length}`);
+      break;
+    }
+    
     if (!company.name) {
       console.log(`⚠️  Skipping company with no name: ${JSON.stringify(company)}`);
       continue;
@@ -298,29 +334,43 @@ async function processCompanyLogos(tools, agents) {
       });
       
       // Add small delay to be respectful to logo services
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 200));
       
     } catch (error) {
       console.error(`Error processing logo for ${company.name}:`, error);
       company.logo = normalizeLogoPath('images/logos/placeholder.svg');
+      processedLogos.push({
+        company: company.name,
+        logo: 'placeholder.svg',
+        id: company.id,
+        status: 'error'
+      });
     }
   }
   
   // Clean up unused logos
-  const cleanupResult = await cleanupUnusedLogos(allCompanies);
-  
-  // Categorize results
-  const existing = processedLogos.filter(p => p.status === 'existing').length;
-  const downloaded = processedLogos.filter(p => p.status === 'downloaded').length;
-  const placeholders = processedLogos.filter(p => p.status === 'placeholder').length;
-  
-  console.log(`📊 Logo processing summary:`);
-  console.log(`   • Total companies: ${processedLogos.length}`);
-  console.log(`   • Existing logos: ${existing}`);
-  console.log(`   • Downloaded logos: ${downloaded}`);
-  console.log(`   • Placeholders: ${placeholders}`);
-  console.log(`   • Logos kept: ${cleanupResult.kept}`);
-  console.log(`   • Logos removed: ${cleanupResult.removed}`);
+  try {
+    const cleanupResult = await cleanupUnusedLogos(allCompanies);
+    
+    // Categorize results
+    const existing = processedLogos.filter(p => p.status === 'existing').length;
+    const downloaded = processedLogos.filter(p => p.status === 'downloaded').length;
+    const placeholders = processedLogos.filter(p => p.status === 'placeholder').length;
+    const errors = processedLogos.filter(p => p.status === 'error').length;
+    
+    console.log(`📊 Logo processing summary:`);
+    console.log(`   • Total companies processed: ${processedLogos.length}`);
+    console.log(`   • Existing logos: ${existing}`);
+    console.log(`   • Downloaded logos: ${downloaded}`);
+    console.log(`   • Placeholders: ${placeholders}`);
+    console.log(`   • Errors: ${errors}`);
+    console.log(`   • Logos kept: ${cleanupResult.kept}`);
+    console.log(`   • Logos removed: ${cleanupResult.removed}`);
+    console.log(`   • Processing time: ${Math.round((Date.now() - startTime) / 1000)}s`);
+    
+  } catch (error) {
+    console.error('Error during cleanup:', error);
+  }
   
   return processedLogos;
 }

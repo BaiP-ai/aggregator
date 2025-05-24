@@ -118,18 +118,13 @@ async function main() {
     };
     
     // Process company logos (download new ones, clean up unused ones)
-    // Skip if SKIP_LOGO_PROCESSING environment variable is set
-    if (process.env.SKIP_LOGO_PROCESSING === 'true') {
-      console.log('⏭️  Skipping logo processing (SKIP_LOGO_PROCESSING=true)');
-    } else {
-      console.log('Processing company logos...');
-      try {
-        await processCompanyLogos(data.tools, data.agents);
-        console.log('✅ Logo processing completed successfully');
-      } catch (error) {
-        console.error('❌ Error during logo processing:', error);
-        // Continue with data processing even if logo processing fails
-      }
+    console.log('Processing company logos...');
+    try {
+      await processCompanyLogos(data.tools, data.agents);
+      console.log('✅ Logo processing completed successfully');
+    } catch (error) {
+      console.error('❌ Error during logo processing:', error);
+      // Continue with data processing even if logo processing fails
     }
     
     // Save updated data with correct logo paths
