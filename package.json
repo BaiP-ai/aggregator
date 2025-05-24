@@ -1,8 +1,7 @@
 "scripts": {
   "dev": "astro dev",
   "start": "astro dev",
-  "build": "npm run fetch-data && npm run process-data && astro build",
-  "build:astro-only": "astro build",
+  "build": "astro build",
   "preview": "astro preview",
   "astro": "astro",
   "fetch-data": "node scripts/fetch-data.js",
