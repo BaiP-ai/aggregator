@@ -12,10 +12,6 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,13 +19,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+        
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: npm
-
+      
       - name: Cache logos
         uses: actions/cache@v3
         with:
@@ -46,13 +42,17 @@ jobs:
         run: |
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
 
-      - name: Build site (includes data fetch and process)
-        run: npm run build
+      - name: Fetch and process data with logos
+        run: |
+          node scripts/fetch-data.js
+          node scripts/process-data.js
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+      - name: Install, build, and upload your site
+        uses: withastro/action@v3
         with:
-          path: ./dist  # Make sure this matches your Astro output directory
+          path: . 
+          node-version: 18
+          package-manager: npm
 
   deploy:
     needs: build
