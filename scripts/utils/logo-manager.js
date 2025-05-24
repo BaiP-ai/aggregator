@@ -85,17 +85,17 @@ function downloadLogo(url, filePath, timeoutMs = 10000) {
     const file = createWriteStream(filePath);
     let timeout;
     
-    const cleanup = async () => {
+    const cleanup = () => {
       try {
         file.close();
-        await fs.unlink(filePath).catch(() => {});
+        fs.unlink(filePath).catch(() => {});
       } catch (error) {
         // Ignore cleanup errors
       }
     };
     
-    timeout = setTimeout(async () => {
-      await cleanup();
+    timeout = setTimeout(() => {
+      cleanup();
       reject(new Error('Download timeout'));
     }, timeoutMs);
     
@@ -119,27 +119,27 @@ function downloadLogo(url, filePath, timeoutMs = 10000) {
             reject(error);
           }
         });
-        file.on('error', async (error) => {
-          await cleanup();
+        file.on('error', (error) => {
+          cleanup();
           reject(error);
         });
       } else {
-        await cleanup();
+        cleanup();
         reject(new Error(`HTTP ${response.statusCode}: ${response.statusMessage}`));
       }
     });
     
-    request.on('error', async (error) => {
+    request.on('error', (error) => {
       clearTimeout(timeout);
-      await cleanup();
+      cleanup();
       reject(error);
     });
     
     // Set request timeout
-    request.setTimeout(timeoutMs, async () => {
+    request.setTimeout(timeoutMs, () => {
       clearTimeout(timeout);
       request.destroy();
-      await cleanup();
+      cleanup();
       reject(new Error('Request timeout'));
     });
   });
