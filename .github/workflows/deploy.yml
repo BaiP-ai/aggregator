@@ -36,7 +36,6 @@ jobs:
         run: |
           node scripts/fetch-data.js
           node scripts/process-data.js
-          node scripts/ensure-logos.js
       
       - name: Build and upload site
         uses: withastro/action@v3
